@@ -23,25 +23,26 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link sidebar-link" data-bs-toggle="collapse" href="#booksManagement" role="button" aria-expanded="false" aria-controls="booksManagement">
+                    <a class="nav-link sidebar-link" data-bs-toggle="collapse" href="#roomManagement" role="button" aria-expanded="false" aria-controls="booksManagement">
                         <i class="fa-solid fa-book me-2"></i>
                         Rooms Management
                         <span class="right-icon float-end"><i class="fas fa-chevron-down"></i></span>
                     </a>
 
-                    <div class="collapse" id="booksManagement">
+                    <div class="collapse" id="roomManagement">
                         <div>
                             <ul class="navbar-nav ps-3">
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/add" class="nav-link"><i class="fa-solid fa-plus me-2"></i> Add New</a>
+                                    <a href="<?php echo BASE_URL ?>rooms/add_room.php" class="nav-link"><i class="fa-solid fa-plus me-2"></i> Add New</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
+                                    <a href="<?php echo BASE_URL ?>rooms/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </li>
+            
 
                 <li class="nav-item">
                     <a class="nav-link sidebar-link" data-bs-toggle="collapse" href="#studentsManagement" role="button" aria-expanded="false" aria-controls="studentsManagement">

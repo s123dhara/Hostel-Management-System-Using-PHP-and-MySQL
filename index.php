@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="password"/>
+                                        <input type="password" class="form-control" name="password" />
                                     </div>
                                     <button type="submit" name="submit" class="btn btn-primary">Login</button>
                                 </form>
@@ -60,4 +60,5 @@
     <!-- Bootstrap CDN JS -->
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

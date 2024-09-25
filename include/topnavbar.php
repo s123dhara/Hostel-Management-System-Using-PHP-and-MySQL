@@ -25,7 +25,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="./assets/images/user.jpg" class="user-icon" />
+                        <img src="<?php echo BASE_URL ?>assets/images/user.jpg" class="user-icon" />
                         Hi admin
                     </a>
 

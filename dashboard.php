@@ -1,9 +1,9 @@
-    <?php include_once("./config/config.php") ?>
-    <?php
-    include_once("./include/header.php");
-    include_once("./include/topnavbar.php");
-    include_once("./include/sidebar.php");
-    ?>
+<?php include_once("./config/config.php") ?>
+<?php
+include_once("./include/header.php");
+include_once("./include/topnavbar.php");
+include_once("./include/sidebar.php");
+?>
 
     <main class="mt-5 pt-3">
         <div class="container-fluid">
@@ -144,5 +144,5 @@
     </main>
 
 
-    <!-- Include footer -->
-    <?php include_once("./include/footer.php") ?>
+<!-- Include footer -->
+<?php include_once("./include/footer.php") ?>
