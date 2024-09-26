@@ -1,32 +1,33 @@
 <?php
 include_once("../config/config.php");
 include_once("../config/database.php");
+
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 
 if (isset($_POST['create_hostel'])) {
     $res = createHostel($conn, $_POST);
-    if ($res) {
-        header("LOCATION:" . BASE_URL . "rooms/add_room.php");
+
+    if (isset($res['success'])) {
+        $_SESSION['success'] = "Hostel has been created successfully";
+        header("Location: " . BASE_URL . "rooms/add_room.php");
         exit;
     } else {
-        echo "faled";
-        exit;
+        $_SESSION['error'] = $res['error'];
     }
 }
 
 if (isset($_POST['create_room'])) {
     $res = createRoom($conn, $_POST);
-    if ($res) {
-        header("LOCATION:" . BASE_URL . "rooms");
+
+    if (isset($res['success'])) {
+        $_SESSION['success'] = "Room has been created successfully";
+        header("Location: " . BASE_URL . "rooms");
         exit;
     } else {
-        echo "FALED";
-        exit;
+        $_SESSION['error'] = $res['error'];
     }
 }
-
-
 ?>
 
 <?php
@@ -60,13 +61,20 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Hostel Number</label>
-                                        <input type="text" name="hostel_number" class="form-control" />
+                                        <?php $hostels = getHostels($conn); ?>
+
+                                        <Select name="hostel_id" class="form-control">
+                                            <option value="">Please Select</option>
+                                            <?php while ($row = $hostels->fetch_assoc()) { ?>
+                                                <option value="<?php echo $row['id'] ?>"> <?php echo $row['hostel_number'] ?> </option>
+                                            <?php } ?>
+                                        </Select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Room Number</label>
-                                        <input type="text" name="room_number" class="form-control" required="required" />
+                                        <input type="text" name="room_number" class="form-control" />
                                     </div>
                                 </div>
 
@@ -76,7 +84,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                         <input type="text" name="floor_number" class="form-control" required />
                                     </div>
                                 </div>
-
+                        
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -96,7 +104,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                 </div>
 
                                 <div class="col-md-12">
-                                    <button name="create_room" type="create" class="btn btn-success">
+                                    <button name="create_room" type="submit" class="btn btn-success">
                                         Create
                                     </button>
 
