@@ -1,3 +1,25 @@
+<?php
+include_once("config/config.php");
+include_once("config/database.php");
+include_once(DIR_URL . "models/student.php");
+
+if (isset($_POST['submit'])) {
+    $res = createStudent($conn, $_POST);
+    if ($res) {
+        header("Location:" . BASE_URL);
+        exit;
+    } else {
+        echo "Something Went Wrong";
+        header("Location:"  . BASE_URL . "signup.php");
+        exit;
+    }
+}
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,9 +36,6 @@
 </head>
 
 <body style="background-color: #212529">
-
-    
-
     <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="row">
             <div class="col-md-12 login-form">
@@ -24,8 +43,8 @@
                     <div class="row g-0">
                         <div class="col-md-5 d-flex align-items-center justify-content-center">
                             <img src="./assets/images/login-photo.png" class="img-fluid rounded-start mt-5" style="width: 100%; height: auto;" />
-                        </div>                        
-                        
+                        </div>
+
                         <div class="col-md-7">
                             <div class="card-body">
                                 <h1 class="card-title text-uppercase fw-bold">
@@ -33,16 +52,16 @@
                                 </h1>
                                 <p class="text-secondary">Create New Account</p>
 
-                                <form method="post" action="">
+                                <form method="post" action="<?php BASE_URL ?>signup.php">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control" name="first_name" required />    
+                                            <input type="text" class="form-control" name="first_name" required />
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" name="last_name" required />    
+                                            <input type="text" class="form-control" name="last_name" required />
                                         </div>
 
                                     </div>
@@ -63,7 +82,7 @@
 
                                 <hr />
                                 <div class="mb-3 d-flex gap-3">
-                                    <a href="./index.php" class="card-text text-dark">Already Have an account?</a>
+                                    <a href="<?php echo BASE_URL ?>login.php" class="card-text text-dark">Already Have an account?</a>
                                 </div>
                             </div>
                         </div>

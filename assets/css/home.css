@@ -1,0 +1,24 @@
+.cover-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cover-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+body {
+  padding-top: 56px; /* Make space for the fixed navbar */
+}
+.hostel-description {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #4a4a4a;
+  background-color: #f9f9f9;
+  padding: 20px;
+}

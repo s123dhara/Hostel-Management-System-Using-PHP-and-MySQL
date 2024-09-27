@@ -1,10 +1,11 @@
+<?php include_once("config/config.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup | Novelty Hostel</title>
+    <title>Login | Novelty Hostel</title>
 
     <!-- Style css Custom -->
     <link rel="stylesheet" href="./assets/css/style.css">
@@ -14,9 +15,6 @@
 </head>
 
 <body style="background-color: #212529">
-
-    
-
     <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="row">
             <div class="col-md-12 login-form">
@@ -24,46 +22,32 @@
                     <div class="row g-0">
                         <div class="col-md-5 d-flex align-items-center justify-content-center">
                             <img src="./assets/images/login-photo.png" class="img-fluid rounded-start mt-5" style="width: 100%; height: auto;" />
-                        </div>                        
-                        
+                        </div>
+
+
                         <div class="col-md-7">
                             <div class="card-body">
                                 <h1 class="card-title text-uppercase fw-bold">
                                     Novelty Hostel
                                 </h1>
-                                <p class="text-secondary">Create New Account</p>
+                                <p class="text-secondary">Enter email and password to login</p>
 
-                                <form method="post" action="">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control" name="first_name" required />    
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" name="last_name" required />    
-                                        </div>
-
-                                    </div>
+                                <form method="post" action="./dashboard.php">
                                     <div class="mb-3">
                                         <label class="form-label">Email address</label>
-                                        <input type="email" class="form-control" name="email" required />
+                                        <input type="email" class="form-control" name="email" />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Create New Password</label>
-                                        <input type="password" class="form-control" name="password" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Confirm Password</label>
-                                        <input type="password" class="form-control" name="password" required />
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="password" />
                                     </div>
                                     <button type="submit" name="submit" class="btn btn-primary">Login</button>
                                 </form>
 
                                 <hr />
                                 <div class="mb-3 d-flex gap-3">
-                                    <a href="./index.php" class="card-text text-dark">Already Have an account?</a>
+                                    <a href="./forgot-password.html" class="card-text text-dark">Forgot Password</a>
+                                    <a href="<?php echo BASE_URL ?>signup.php" class="card-text text-dark">New User?</a>
                                 </div>
                             </div>
                         </div>
