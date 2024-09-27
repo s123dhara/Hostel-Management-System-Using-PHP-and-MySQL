@@ -231,8 +231,8 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <div class="mb-2">
                                         <label class="form-label">Admission Receipt</label>
                                         <div class="d-flex align-items-center">
-                                        <input type="file" name="admission_receipt" class="form-control gap-1 m-2" required />
-                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                            <input type="file" name="admission_receipt" class="form-control gap-1 m-2" required />
+                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
                                         </div>
                                     </div>
                                 </div>
