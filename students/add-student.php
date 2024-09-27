@@ -4,16 +4,23 @@ include_once("../config/database.php");
 
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
+include_once(DIR_URL . "models/student.php");
 
-if (isset($_POST['create_hostel'])) {
-    $res = createHostel($conn, $_POST);
 
-    if (isset($res['success'])) {
-        $_SESSION['success'] = "Hostel has been created successfully";
-        header("Location: " . BASE_URL . "rooms/add_room.php");
+if (isset($_POST['create_student'])) {
+    // echo "<pre>";
+    // print_r($_POST);
+    // exit;
+    $res = create_Student_by_admin($conn, $_POST, $_FILES);
+
+    if (isset($res['success']) && $res['success'] == true) {
+        $_SESSION['success'] = "Student recocrd has been created successfully";
+        header("Location: " . BASE_URL . "students");
         exit;
     } else {
         $_SESSION['error'] = $res['error'];
+        header("Location: " . BASE_URL . "students");
+        exit;
     }
 }
 
@@ -51,24 +58,24 @@ include_once(DIR_URL . "include/sidebar.php");
                         Basic Details
                     </div>
                     <div class="card-body">
-                        <form method="post" action="<?php echo BASE_URL ?>rooms/add_room.php">
+                        <form method="post" action="<?php echo BASE_URL ?>students/add-student.php" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">First Name</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="first_name" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Middle Name</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="middle_name" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Last Name</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="last_name" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -76,18 +83,18 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Date of Birth</label>
-                                        <input type="date" name="floor_number" class="form-control" required />
+                                        <input type="date" name="date_of_birth" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         <label class="form-label">Gender</label>
-                                        <select name="" id="" class="form-control">
+                                        <select name="gender" id="" class="form-control">
                                             <option value="">Please Select</option>
-                                            <option value="">Male</option>
-                                            <option value="">Female</option>
-                                            <option value="">Others</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="others">Others</option>
                                         </select>
                                     </div>
                                 </div>
@@ -95,14 +102,14 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label class="form-label">Phone Number</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="phone_number" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="email" name="email" class="form-control" />
                                     </div>
                                 </div>
 
@@ -112,21 +119,21 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Guardian Name</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="guardian_name" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label class="form-label">Guardian Phone Number</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="guardian_phone_number" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         <label class="form-label">Relationship with Guardian</label>
-                                        <input type="text" name="room_number" class="form-control" />
+                                        <input type="text" name="guardian_relationship" class="form-control" />
                                     </div>
                                 </div>
 
@@ -140,26 +147,26 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-5">
                                     <div class="mb-2">
                                         <label class="form-label">Address</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="address" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">State</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="state" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Town/Village</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="town_village" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Pincode</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="pincode" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -172,36 +179,35 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Name of Institute</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="institute_name" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Current Semester</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="semester" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Stream</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="stream" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Course</label>
-                                        <input type="text" name="floor_number" class="form-control" required />
+                                        <input type="text" name="course" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Admission Date</label>
-                                        <input type="date" name="floor_number" class="form-control" required />
+                                        <input type="date" name="admission_date" class="form-control" />
                                     </div>
                                 </div>
-
 
                             </div>
 
@@ -213,14 +219,20 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-4">
                                     <div class="mb-2">
                                         <label class="form-label">Id Proof</label>
-                                        <input type="file" name="floor_number" class="form-control" required />
+                                        <div class="d-flex align-items-center">
+                                            <input type="file" name="id_proof" class="form-control gap-1 m-2" required />
+                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="mb-2">
                                         <label class="form-label">Admission Receipt</label>
-                                        <input type="file" name="floor_number" class="form-control" required />
+                                        <div class="d-flex align-items-center">
+                                        <input type="file" name="admission_receipt" class="form-control gap-1 m-2" required />
+                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -228,7 +240,10 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-4">
                                     <div class="mb-2">
                                         <label class="form-label">Photograph</label>
-                                        <input type="file" name="floor_number" class="form-control" required />
+                                        <div class="d-flex align-items-center">
+                                            <input type="file" name="photo" class="form-control gap-1 m-2" required />
+                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -239,9 +254,34 @@ include_once(DIR_URL . "include/sidebar.php");
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mt-3">
-                                        <button name="create_room" type="submit" class="btn btn-success">
-                                            Create
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Submit
                                         </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You want to submit?</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h2 class="text-secondary fw-bold">
+                                                            Please check all details, then Submit
+                                                        </h2>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button name="create_student" type="submit" class="btn btn-outline-success">
+                                                            Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <button type="reset" class="btn btn-secondary">
                                             Cancel
