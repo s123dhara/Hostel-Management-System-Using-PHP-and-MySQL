@@ -7,9 +7,10 @@ include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
 
 
-if (isset($_POST['create_student'])) {
+if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['create_student'])) {
     // echo "<pre>";
     // print_r($_POST);
+    // print_r($_FILES);
     // exit;
     $res = create_Student_by_admin($conn, $_POST, $_FILES);
 

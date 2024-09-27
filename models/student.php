@@ -46,9 +46,6 @@ function createStudent($conn, $params)
 function create_student_by_admin($conn, $params, $files)
 {
     $result = array('success' => '', 'error' => '');
-    // echo "<pre>";
-    // print_r($params);
-    // exit;
 
     // Extract all fields from the $params array
     $first_name      = $params['first_name'];
@@ -69,160 +66,104 @@ function create_student_by_admin($conn, $params, $files)
     $course          = $params['course'];
     $admission_date  = $params['admission_date'];
 
+    // File uploads
+    $id_proof = $files['id_proof'];
+    $admission_receipt = $files['admission_receipt'];
+    $photo = $files['photo'];
 
-    $id_proof = $_FILES['id_proof'];
-    $admission_receipt = $_FILES['admission_receipt'];
-    $photo = $_FILES['photo'];
-
-    // Validate file uploads
+    // Allowed formats for images
     $allowed_formats = ['image/png', 'image/jpeg', 'image/jpg'];
 
     // Validate each required field
-    if (empty($first_name)) {
-        $result['error'] = "First Name is required.";
-        return $result;
-    }
+    if (empty($first_name)) { $result['error'] = "First Name is required."; return $result; }
+    if (empty($last_name)) { $result['error'] = "Last Name is required."; return $result; }
+    if (empty($date_of_birth)) { $result['error'] = "Date of Birth is required."; return $result; }
+    if (empty($gender)) { $result['error'] = "Gender is required."; return $result; }
+    if (empty($email)) { $result['error'] = "Email is required."; return $result; }
+    if (empty($guardian_name)) { $result['error'] = "Guardian Name is required."; return $result; }
+    if (empty($address)) { $result['error'] = "Address is required."; return $result; }
+    if (empty($state)) { $result['error'] = "State is required."; return $result; }
+    if (empty($pincode)) { $result['error'] = "Pincode is required."; return $result; }
+    if (empty($institute_name)) { $result['error'] = "Institute Name is required."; return $result; }
+    if (empty($semester)) { $result['error'] = "Semester is required."; return $result; }
+    if (empty($stream)) { $result['error'] = "Stream is required."; return $result; }
+    if (empty($course)) { $result['error'] = "Course is required."; return $result; }
+    if (empty($admission_date)) { $result['error'] = "Admission Date is required."; return $result; }
 
-    if (empty($last_name)) {
-        $result['error'] = "Last Name is required.";
-        return $result;
-    }
+    // Handle file uploads
+    $id_proof_result = handle_file_upload($id_proof, $allowed_formats, "ID Proof");
+    if (isset($id_proof_result['error'])) { return ['error' => $id_proof_result['error']]; }
 
-    if (empty($date_of_birth)) {
-        $result['error'] = "Date of Birth is required.";
-        return $result;
-    }
+    $admission_receipt_result = handle_file_upload($admission_receipt, $allowed_formats, "Admission Receipt");
+    if (isset($admission_receipt_result['error'])) { return ['error' => $admission_receipt_result['error']]; }
 
-    if (empty($gender)) {
-        $result['error'] = "Gender is required.";
-        return $result;
-    }
+    $photo_result = handle_file_upload($photo, $allowed_formats, "Photo");
+    if (isset($photo_result['error'])) { return ['error' => $photo_result['error']]; }
 
-    if (empty($email)) {
-        $result['error'] = "Email is required.";
-        return $result;
-    }
-
-    if (empty($guardian_name)) {
-        $result['error'] = "Guardian Name is required.";
-        return $result;
-    }
-
-    if (empty($address)) {
-        $result['error'] = "Address is required.";
-        return $result;
-    }
-
-    if (empty($state)) {
-        $result['error'] = "State is required.";
-        return $result;
-    }
-
-    if (empty($pincode)) {
-        $result['error'] = "Pincode is required.";
-        return $result;
-    }
-
-    if (empty($institute_name)) {
-        $result['error'] = "Institute Name is required.";
-        return $result;
-    }
-
-    if (empty($semester)) {
-        $result['error'] = "Semester is required.";
-        return $result;
-    }
-
-    if (empty($stream)) {
-        $result['error'] = "Stream is required.";
-        return $result;
-    }
-
-    if (empty($course)) {
-        $result['error'] = "Course is required.";
-        return $result;
-    }
-
-    if (empty($admission_date)) {
-        $result['error'] = "Admission Date is required.";
-        return $result;
-    }
-
-
-    // Handle each file upload
-    $id_proof_result = handle_file_upload($id_proof);
-    if (isset($id_proof_result['error'])) {
-        return ['error' => $id_proof_result['error']];
-    }
-
-    $admission_receipt_result = handle_file_upload($admission_receipt);
-    if (isset($admission_receipt_result['error'])) {
-        return ['error' => $admission_receipt_result['error']];
-    }
-
-    $photo_result = handle_file_upload($photo);
-    if (isset($photo_result['error'])) {
-        return ['error' => $photo_result['error']];
-    }
-
-    // If all required fields are present, proceed with inserting into database
-    // Insert the record into the database (example query)
-
+    // Insert the document record into the database
     $datetime = date("Y-m-d H:i:s");
-    $dob_mysql = date("Y-m-d", strtotime($date_of_birth));
-    $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
-    // If all required fields are present, proceed with inserting into database
-    // Insert the record into the database (example query)
-    $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship,address, state, pincode, institute_name, semester, stream, course, admission_date, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime);
+    $sql = "INSERT INTO documents (photo, admission_receipt, id_proof, photo_type, admission_receipt_type, id_proof_type, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("bbbssss", $photo_result['content'], $admission_receipt_result['content'], $id_proof_result['content'], $photo['type'], $admission_receipt['type'], $id_proof['type'], $datetime);
 
+    $stmt->send_long_data(0, $photo_result['content']);
+    $stmt->send_long_data(1, $admission_receipt_result['content']);
+    $stmt->send_long_data(2, $id_proof_result['content']);
 
+    // Execute the statement
     if ($stmt->execute()) {
-        // $result['success'] = "Student record created successfully.";
+        $document_id = $stmt->insert_id;
 
-        // $student_id = $stmt->insert_id;
+        // Prepare and execute the student insertion query
+        $dob_mysql = date("Y-m-d", strtotime($date_of_birth));
+        $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
+        
+        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id);
 
-        $sql = "INSERT INTO documents(photo,admission_receipt,id_proof)
-                VALUES(?, ?, ?)";
-        
-        $stmt = $conn->query($sql);
-        $stmt->bind_param("bbb", $photo_result['content'], $admission_receipt_result['content'], $id_proof_result['content']);
-        
-        $stmt->send_long_data(0, $photo_result);
-        $stmt->send_long_data(0, $admission_receipt_result);
-        $stmt->send_long_data(0, $id_proof_result);
         if ($stmt->execute()) {
-            $result['success'] = "Student record created successfully.";
+
+            $student_id =$stmt->insert_id;
+            $sql = "UPDATE documents d SET d.student_id = $student_id WHERE id = $document_id";
+            $res = $conn->query($sql);
+
+            if($res) {
+                $result['success'] = true;
+            }else{
+                $result['error'] = "Failed to update in docuement table";
+            }
+
         } else {
-            $result['error'] = "erorrrrrrrrrrrrrrrr.";
+            $result['error'] = "Failed to create student record.";
         }
-
-        // $sql = "UPDATE students SET document_id = $document_id WHERE id = "
-
-        $stmt->close();    
-
     } else {
-        $result['error'] = "Failed to create student record.";
+        $result['error'] = "Failed to upload documents.";
     }
 
     return $result;
 }
 
-
-function handle_file_upload($file)
+// File upload handler function
+function handle_file_upload($file, $allowed_formats, $name)
 {
-    // Check if there was an upload error
-    // if ($file['error'] !== UPLOAD_ERR_OK) {
-    //     return ['error' => "File upload error: " . $file['error']];
-    // }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['error' => "File upload error: " . $file['error']];
+    }
 
-    // // Check file type
-    // if (!in_array($file['type'], $GLOBALS['allowed_formats'])) {
-    //     return ['error' => "Invalid file format. Only .png, .jpg, and .jpeg are allowed."];
-    // }
+    if (!in_array($file['type'], $allowed_formats)) {
+        return ['error' => "$name: Invalid file format. Only .png, .jpg, and .jpeg are allowed."];
+    }
 
-    // Read the file content into a variable
+    // Size limits (0 KB to 100 KB)
+    $minSize = 0;  // 0 KB in bytes
+    $maxSize = 102400; // 100 KB in bytes
+
+    if ($file['size'] < $minSize || $file['size'] > $maxSize) {
+        return ['error' => "$name: File size must be between 51 KB and 100 KB."];
+    }
+
+    // Get the file content
     $file_content = file_get_contents($file['tmp_name']);
     return ['content' => $file_content];
 }
-

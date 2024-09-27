@@ -8,6 +8,10 @@ include_once(DIR_URL . "models/student.php");
 
 if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_POST['create_student'])) {
 
+    echo "<pre>";
+    print_r($_FILES);
+    exit;
+
     // File validation
     if (!in_array($_FILES['photo']['type'], ['image/png', 'image/jpeg', 'image/jpg'])) {
         echo "WRONG TYPE UPLOADED for Photo";
@@ -18,6 +22,23 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_POST['creat
         echo "WRONG TYPE UPLOADED for ID Proof";
         exit;
     }
+
+    // Define size limits (in bytes)
+    $minSize = 0;  // Minimum size limit (50 KB)
+    $maxSize = 102500; // Maximum size limit (100 KB)
+
+    // Validate the size of the photo
+    if ($_FILES['photo']['size'] < $minSize || $_FILES['photo']['size'] > $maxSize) {
+        echo "Photo size must be between 51 KB and 100 KB.";
+        exit;
+    }
+
+    // Validate the size of the ID proof
+    if ($_FILES['id_proof']['size'] < $minSize || $_FILES['id_proof']['size'] > $maxSize) {
+        echo "ID proof size must be between 51 KB and 100 KB.";
+        exit;
+    }
+
 
     // Get file content and types
     $imgData = file_get_contents($_FILES['photo']['tmp_name']);
@@ -53,35 +74,8 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_POST['creat
     $conn->close();
 }
 
-// Room creation logic
-if (isset($_POST['create_room'])) {
-    $res = createRoom($conn, $_POST);
-
-    if (isset($res['success'])) {
-        $_SESSION['success'] = "Room has been created successfully";
-        header("Location: " . BASE_URL . "rooms");
-        exit;
-    } else {
-        $_SESSION['error'] = $res['error'];
-    }
-}
 ?>
 
-
-
-
-if (isset($_POST['create_room'])) {
-    $res = createRoom($conn, $_POST);
-
-    if (isset($res['success'])) {
-        $_SESSION['success'] = "Room has been created successfully";
-        header("Location: " . BASE_URL . "rooms");
-        exit;
-    } else {
-        $_SESSION['error'] = $res['error'];
-    }
-}
-?>
 
 <?php
 include_once(DIR_URL . "include/header.php");
