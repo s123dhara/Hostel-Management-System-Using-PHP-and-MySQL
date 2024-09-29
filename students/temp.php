@@ -179,10 +179,32 @@ include_once(DIR_URL . "include/sidebar.php");
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </form>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#test">
+                            Click here
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="test" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl"> <!-- Adjust modal size if needed -->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-4" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-0"> <!-- Remove padding to let the image take full space -->
+                                        <img src="../assets/images/test.png" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -191,33 +213,7 @@ include_once(DIR_URL . "include/sidebar.php");
 </main>
 <!--Main content end-->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?php echo BASE_URL ?>rooms/add_room.php" method="post">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Hostel Number</label>
-                        <input type="text" class="form-control" placeholder="Enter Hostel Number" id="exampleInputEmail1" aria-describedby="emailHelp" name="hostel_number">
 
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Total Rooms</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="total_rooms" placeholder="Enter Total Rooms">
-                    </div>
-                    <button type="submit" name="create_hostel" class="btn btn-primary">submit</button>
-                </form>
-                <!-- <button type="button" name="create_hostel" class="btn btn-primary">submit</button> -->
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Button trigger modal -->

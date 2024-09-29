@@ -168,19 +168,11 @@ function create_student_by_admin($conn, $params, $files)
         $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
 
         $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
         $stmt->bind_param("sssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id);
 
         if ($stmt->execute()) {
-
-            $student_id = $stmt->insert_id;
-            $sql = "UPDATE documents d SET d.student_id = $student_id WHERE id = $document_id";
-            $res = $conn->query($sql);
-
-            if ($res) {
-                $result['success'] = true;
-            } else {
-                $result['error'] = "Failed to update in docuement table";
-            }
+            $result['success'] = true;
         } else {
             $result['error'] = "Failed to create student record.";
         }
@@ -213,4 +205,12 @@ function handle_file_upload($file, $allowed_formats, $name)
     // Get the file content
     $file_content = file_get_contents($file['tmp_name']);
     return ['content' => $file_content];
+}
+
+
+function getAllStudents($conn) {
+    // $sql = "SELECT id,first_name, last_name, stream, course, semester FROM students";
+    $sql = "SELECT * FROM students";
+    $result = $conn->query($sql);
+    return $result;
 }
