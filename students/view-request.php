@@ -6,11 +6,13 @@ include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
 
-$id = 1;
-$query = "SELECT * FROM students WHERE id = $id";
-$result = $conn->query($query);
-$row = $result->fetch_assoc();
-$img_id = $row['document_id'];
+if (isset($_GET) && isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $query = "SELECT * FROM students WHERE id = $id";
+    $result = $conn->query($query);
+    $row = $result->fetch_assoc();
+    $img_id = $row['document_id'];
+}
 
 ?>
 
@@ -96,14 +98,14 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label class="form-label">Phone Number</label>
-                                        <input type="text" name="phone_number" class="form-control" value="<?php echo $row['phone_number'] ?>"/>
+                                        <input type="text" name="phone_number" class="form-control" value="<?php echo $row['phone_number'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" value="<?php echo $row['email'] ?>"/>
+                                        <input type="email" name="email" class="form-control" value="<?php echo $row['email'] ?>" />
                                     </div>
                                 </div>
 
@@ -113,21 +115,21 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Guardian Name</label>
-                                        <input type="text" name="guardian_name" class="form-control" value="<?php echo $row['guardian_name'] ?>"/>
+                                        <input type="text" name="guardian_name" class="form-control" value="<?php echo $row['guardian_name'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label class="form-label">Guardian Phone Number</label>
-                                        <input type="text" name="guardian_phone_number" class="form-control" value="<?php echo $row['guardian_phone_number'] ?>"/>
+                                        <input type="text" name="guardian_phone_number" class="form-control" value="<?php echo $row['guardian_phone_number'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         <label class="form-label">Relationship with Guardian</label>
-                                        <input type="text" name="guardian_relationship" class="form-control" value="<?php echo $row['guardian_relationship'] ?>"/>
+                                        <input type="text" name="guardian_relationship" class="form-control" value="<?php echo $row['guardian_relationship'] ?>" />
                                     </div>
                                 </div>
 
@@ -141,26 +143,26 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-5">
                                     <div class="mb-2">
                                         <label class="form-label">Address</label>
-                                        <input type="text" name="address" class="form-control" value="<?php echo $row['address'] ?>"/>
+                                        <input type="text" name="address" class="form-control" value="<?php echo $row['address'] ?>" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">State</label>
-                                        <input type="text" name="state" class="form-control" value="<?php echo $row['state'] ?>"/>
+                                        <input type="text" name="state" class="form-control" value="<?php echo $row['state'] ?>" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Town/Village</label>
-                                        <input type="text" name="town_village" class="form-control" value="<?php echo $row['town_village'] ?>"/>
+                                        <input type="text" name="town_village" class="form-control" value="<?php echo $row['town_village'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Pincode</label>
-                                        <input type="text" name="pincode" class="form-control" value="<?php echo $row['pincode'] ?>"/>
+                                        <input type="text" name="pincode" class="form-control" value="<?php echo $row['pincode'] ?>" />
                                     </div>
                                 </div>
                             </div>
@@ -173,33 +175,33 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Name of Institute</label>
-                                        <input type="text" name="institute_name" class="form-control" value="<?php echo $row['institute_name'] ?>"/>
+                                        <input type="text" name="institute_name" class="form-control" value="<?php echo $row['institute_name'] ?>" />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Current Semester</label>
-                                        <input type="text" name="semester" class="form-control" value="<?php echo $row['semester'] ?>"/>
+                                        <input type="text" name="semester" class="form-control" value="<?php echo $row['semester'] ?>" />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Stream</label>
-                                        <input type="text" name="stream" class="form-control" value="<?php echo $row['stream'] ?>"/>
+                                        <input type="text" name="stream" class="form-control" value="<?php echo $row['stream'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="mb-2">
                                         <label class="form-label">Course</label>
-                                        <input type="text" name="course" class="form-control" value="<?php echo $row['course'] ?>"/>
+                                        <input type="text" name="course" class="form-control" value="<?php echo $row['course'] ?>" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="mb-2">
                                         <label class="form-label">Admission Date</label>
-                                        <input type="date" name="admission_date" class="form-control" value="<?php echo $row['admission_date'] ?>"/>
+                                        <input type="date" name="admission_date" class="form-control" value="<?php echo $row['admission_date'] ?>" />
                                     </div>
                                 </div>
 
@@ -228,7 +230,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                         </div>
                                                         <div class="modal-body p-0"> <!-- Remove padding to let the image take full space -->
                                                             <!-- <img src="displayPhoto.php?id=<?php echo $img_id ?>&&type=id_proof" class="img-fluid" alt=""> -->
-                                                            <img src="../assets//images/login-bg.jpg" class="img-fluid" alt="">
+                                                            <img src="displayPhoto.php?id=<?php echo $img_id ?>&&type=id_proof" class="img-fluid" alt="">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
@@ -314,36 +316,59 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <div class="mt-3">
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-success">
-                                            Approved
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Approve_Modal">
+                                            Approve
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="Approve_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5 text-danger fw-bold" id="exampleModalLabel">Reason for Rejection</h1>
+                                                        <h1 class="modal-title fs-5 text-success fw-bold text-uppercase" id="Reject_Modal_Label">Are You sure?</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-body w-100">
-
-                                                        <textarea name="" id="">
-
-                                                        </textarea>
+                                                    <div class="modal-body">
+                                                        <h2 class="text-secondary fw-bold">
+                                                            Do you want to Confirm? Then Click On <strong>Approve</strong>
+                                                        </h2>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button name="create_student" type="submit" class="btn btn-outline-danger">
-                                                            Rejected
-                                                        </button>
+                                                        <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=approved" class="btn btn-outline-success">
+                                                            Approve
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <button type="reset" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Rejected
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="Reject_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5 text-danger fw-bold text-uppercase" id="Reject_Modal_Label">Reason for Rejection</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body w-100">
+                                                        <form action="">
+                                                            <textarea class="form-control" style="resize: none;" id="rejectionReason" rows="5"></textarea>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=reject" class="btn btn-outline-danger">
+                                                                    Reject
+                                                                </a>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="reset" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Reject_Modal">
+                                            Reject
                                         </button>
                                     </div>
                                 </div>

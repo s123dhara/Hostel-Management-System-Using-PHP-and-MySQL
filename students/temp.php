@@ -74,7 +74,28 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_POST['creat
     $conn->close();
 }
 
+$SQL = "SELECT room_number FROM rooms";
+$res = $conn->query($SQL);
+
+$rooms_store_array = array();
+
+while($room = $res->fetch_assoc()) {
+    array_push($rooms_store_array, $room['room_number']);
+}
+
+print_r($rooms_store_array);
+
+// Generate a random index from the array
+$random_index = array_rand($rooms_store_array);
+
+// Output the random room number using the random index
+echo "\nRandom Room Number: " . $rooms_store_array[$random_index];
+exit;
+
+
+
 ?>
+
 
 
 <?php

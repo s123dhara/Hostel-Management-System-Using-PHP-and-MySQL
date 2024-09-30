@@ -6,13 +6,6 @@ include_once(DIR_URL . "models/student.php");
 ?>
 
 <?php
-$rooms = getRooms($conn);
-
-// Check if the array is empty
-if (empty($rooms)) {
-    $_SESSION['error'] = "Error: No rooms found or there was a problem fetching the room data.";
-}
-
 
 ## Delete Rooms
 if (isset($_GET['action']) && $_GET['action'] == 'delete') {
@@ -48,6 +41,14 @@ if (!isset($students->num_rows)) {
 }
 
 
+$type = 'Pending';
+$pending_students = getAllStudents($conn, $type);
+$pending_students_result = false;
+
+// Check if there are pending students
+if ($pending_students && $pending_students->num_rows > 0) {
+    $pending_students_result = true; // Set to true if any pending students exist
+}
 
 ?>
 
@@ -69,11 +70,14 @@ include_once(DIR_URL . "include/sidebar.php");
             <div class="col-md-12">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
                 <h4 class="fw-bold text-uppercase">Manage Rooms
-                    <a href="<?php echo BASE_URL ?>students/pending-request.php" target="_blank" class="btn btn-warning position-relative float-end mb-2">
-                        Pending Requests
+                    <a href="<?php echo BASE_URL ?>students/pending-request.php" class="btn btn-warning position-relative float-end mb-2">
+                        Pending Request
+                        <?php 
+                        if($pending_students_result) {?>
                         <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
                             <span class="visually-hidden">New alerts</span>
                         </span>
+                        <?php } ?>
                     </a>
                 </h4>
             </div>
@@ -102,30 +106,42 @@ include_once(DIR_URL . "include/sidebar.php");
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                    if($students->num_rows > 0) {
-                                       $i = 1;
-                                        while($row = $students->fetch_assoc()) { ?>                                        
-                                            <tr>
-                                                <th scope="row"><?php echo $i++ ?></th>
-                                                <td><?php echo $row['first_name'] . $row['last_name'] ?></td>
-                                                <td>101</td>
-                                                <td>A1</td>
-                                                <td><?php echo $row['stream'] ?></td>
-                                                <td><?php echo $row['course'] ?></td>
-                                            <td>2</td>
-                                            <td>10/09/24</td>
-                                            <td>10/09/25</td>
-                                            <td><span class="badge text-bg-success">Running</span></td>
-                                            <td>
-                                                <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                            </td>
-                                        </tr>
-                                    
-                                   <?php } ?>
+                                    <?php
+                                    if ($students->num_rows > 0) {
+                                        $i = 1;
+                                        while ($row = $students->fetch_assoc()) { ?>
 
-                                   <?php } ?>
+                                            <?php $room = getRoomById($conn, $row['room_id']);
+                                            $room = $room->fetch_assoc();
+                                            $room_number = $room['room_number'];
+
+                                            $hostel = getHostelById($conn, $room['hostel_id']);
+                                            $hostel = $hostel->fetch_assoc();
+                                            $hostel_number = $hostel['hostel_number'];
+                                            ?>
+
+                                            <?php if ($row['student_status'] == 'Approved') { ?>
+                                                <tr>
+                                                    <th scope="row"><?php echo $i++ ?></th>
+                                                    <td><?php echo $row['first_name'] . $row['last_name'] ?></td>
+                                                    <td><?php echo $room_number ?></td>
+                                                    <td><?php echo $hostel_number ?></td>
+                                                    <td><?php echo $row['stream'] ?></td>
+                                                    <td><?php echo $row['course'] ?></td>
+                                                    <td><?php echo $row['semester'] ?></td>
+                                                    <td>10/09/24</td>
+                                                    <td>10/09/25</td>
+                                                    <td><span class="badge text-bg-success">Running</span></td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
+                                                </tr>
+
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                    <?php } ?>
                                 </tbody>
 
                             </table>

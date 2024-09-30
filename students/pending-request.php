@@ -7,11 +7,10 @@ include_once(DIR_URL . "models/student.php");
 ?>
 
 <?php
-$rooms = getRooms($conn);
 
-// Check if the array is empty
-if (empty($rooms)) {
-    $_SESSION['error'] = "Error: No rooms found or there was a problem fetching the room data.";
+$students = getAllStudents($conn, 'Pending');
+if (!isset($students->num_rows)) {
+    $_SESSION['error'] = "Error: " . $conn->error;
 }
 
 
@@ -69,7 +68,7 @@ include_once(DIR_URL . "include/sidebar.php");
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        All Books
+                        Waiting Students
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -78,47 +77,46 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
-                                        
+
                                         <th scope="col">Stream</th>
                                         <th scope="col">Course</th>
                                         <th scope="col">Semester</th>
-                                        
+
                                         <th scope="col">Applied Date</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Supriyo dhara</td>
+                                    <?php
+                                    if ($students->num_rows > 0) {
+                                        $i = 1;
+                                        $pendings_students = false;
+                                        while ($row = $students->fetch_assoc()) { ?>
+                                            <?php if ($row['student_status'] == 'Pending') {
+                                                $pendings_students = true;
+                                            ?>
+                                                <tr>
+                                                    <th scope="row"><?php echo $i++ ?></th>
+                                                    <td><?php echo $row['first_name'] . $row['last_name'] ?></td>
+                                                    <td><?php echo $row['stream'] ?></td>
+                                                    <td><?php echo $row['course'] ?></td>
+                                                    <td><?php echo $row['semester'] ?></td>
+                                                    <td><?php echo date("d-m-Y", strtotime($row['apply_date'])) ?></td>
+                                                    <td><span class="badge text-bg-warning"><?php echo $row['student_status'] ?></span></td>
+                                                    <td>
+                                                        <a href="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $row['id'] ?>" target="_blank" class="btn btn-info btn-sm">View</a>
 
-                                        <td>B.tech</td>
-                                        <td>Computer Science</td>
-                                        <td>2</td>
-                                        <td>10/09/24</td>
-                                        <td><span class="badge text-bg-warning">pending</span></td>
-                                        <td>
-                                        <a href="<?php echo BASE_URL ?>students/view-request.php" class="btn btn-info btn-sm">View</a>
-                                        
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>sk paul</td>
-                                     
-                                        <td>B.tech</td>
-                                        <td>Computer Science</td>
-                                        <td>2</td>
-                                        <td>10/09/24</td>
-                                        <td><span class="badge text-bg-warning">pending</span></td>
-                                        <td>
-                                            <a href="#" class="btn btn-info btn-sm">View</a>
-                                
-                                        </td>
-                                    </tr>
-                                    
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+
+                                        <?php } ?>
+
+                                    <?php } ?>
+
                                 </tbody>
+
 
                             </table>
                         </div>

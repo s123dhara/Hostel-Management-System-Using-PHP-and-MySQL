@@ -166,10 +166,12 @@ function create_student_by_admin($conn, $params, $files)
         // Prepare and execute the student insertion query
         $dob_mysql = date("Y-m-d", strtotime($date_of_birth));
         $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
+        $current_student_status = "Pending";
 
-        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        
-        $stmt->bind_param("sssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id);
+        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id, apply_date, student_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)");
+
+
+        $stmt->bind_param("sssssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id, $datetime, $current_student_status);
 
         if ($stmt->execute()) {
             $result['success'] = true;
@@ -208,9 +210,65 @@ function handle_file_upload($file, $allowed_formats, $name)
 }
 
 
-function getAllStudents($conn) {
+function getAllStudents($conn, $type = NULL)
+{
     // $sql = "SELECT id,first_name, last_name, stream, course, semester FROM students";
-    $sql = "SELECT * FROM students";
+    if($type == NULL) {
+        $sql = "SELECT * FROM students WHERE student_status = 'Approved'";
+    }else {
+        $sql = "SELECT * FROM students WHERE student_status = 'Pending'";
+    }
     $result = $conn->query($sql);
     return $result;
+}
+
+
+function update_student_status($conn, $type, $id, $reason = null)
+{
+
+    $SQL = "UPDATE students SET student_status = 'Approved' WHERE id = $id";
+    $result = $conn->query($SQL);
+    return $result;
+}
+
+
+function assign_room_number($conn, $student_id)
+{
+    $SQL = "SELECT id FROM rooms WHERE room_status = 'Available'";
+    $res = $conn->query($SQL);
+
+    if(!$res->num_rows > 0) {
+        return array('error' => "NO ROOM IS AVAILABLE");
+    }
+
+    $rooms_store_array = array();
+    while ($room = $res->fetch_assoc()) {
+        array_push($rooms_store_array, $room['id']);
+    }
+
+     // Generate a random index from the array
+    $random_index = array_rand($rooms_store_array);
+    $alloted_room_id = $rooms_store_array[$random_index];
+
+    $SQL = "SELECT current_occupancy, max_occupancy FROM rooms WHERE id = $alloted_room_id";
+    $res = $conn->query($SQL);
+    $store_result = $res->fetch_assoc();
+    $current_occupancy = $store_result['current_occupancy'];
+    $max_occupancy = $store_result['max_occupancy'];
+    
+    $SQL = "UPDATE rooms SET current_occupancy = $current_occupancy + 1 WHERE 
+            id = $alloted_room_id";
+    $res = $conn->query($SQL);
+    
+    //if max_occupancy achive
+    if($max_occupancy == $current_occupancy + 1) {
+        $SQL = "UPDATE rooms SET room_status = 'Occupied' WHERE id = $alloted_room_id";
+        $res = $conn->query($SQL);
+    }
+
+    //assign Room Id to Student Table 
+    $SQL = "UPDATE students SET room_id = $alloted_room_id WHERE id = $student_id";
+    $res = $conn->query($SQL);
+
+    return array('success' => "Sucessfully Assigned Room to Students ");
 }
