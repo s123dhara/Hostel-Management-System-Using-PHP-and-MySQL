@@ -59,6 +59,7 @@ function create_student_by_admin($conn, $params, $files)
     $guardian_relationship = $params['guardian_relationship'];
     $address         = $params['address'];
     $state           = $params['state'];
+    $town_village = $params['town_village'];
     $pincode         = $params['pincode'];
     $institute_name  = $params['institute_name'];
     $semester        = $params['semester'];
@@ -105,6 +106,10 @@ function create_student_by_admin($conn, $params, $files)
     }
     if (empty($state)) {
         $result['error'] = "State is required.";
+        return $result;
+    }
+    if (empty($town_village)) {
+        $result['error'] = "town_village is required.";
         return $result;
     }
     if (empty($pincode)) {
@@ -168,10 +173,10 @@ function create_student_by_admin($conn, $params, $files)
         $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
         $current_student_status = "Pending";
 
-        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id, apply_date, student_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id, apply_date, student_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)");
 
 
-        $stmt->bind_param("sssssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id, $datetime, $current_student_status);
+        $stmt->bind_param("ssssssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id, $datetime, $current_student_status, $town_village);
 
         if ($stmt->execute()) {
             $result['success'] = true;

@@ -44,7 +44,7 @@ include_once(DIR_URL . "include/sidebar.php");
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
                 <h4 class="fw-bold text-uppercase">Add Room
 
-                    <button type="button" style="float:right" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" style="float:right" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add_hostel_modal">
                         Create Hostel
                     </button>
                 </h4>
@@ -56,7 +56,7 @@ include_once(DIR_URL . "include/sidebar.php");
                         Fill the form
                     </div>
                     <div class="card-body">
-                        <form method="post" action="<?php echo BASE_URL ?>rooms/add_room.php">
+                        <form method="post" action="<?php echo BASE_URL ?>rooms/add-room.php">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -123,23 +123,23 @@ include_once(DIR_URL . "include/sidebar.php");
 <!--Main content end-->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="add_hostel_modal" tabindex="-1" aria-labelledby="add_hostel_modal_Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="add_hostel_modal_Label">Create A New Hostel</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="<?php echo BASE_URL ?>rooms/add_room.php" method="post">
+                <form action="<?php echo BASE_URL ?>rooms/add-room.php" method="post">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Hostel Number</label>
-                        <input type="text" class="form-control" placeholder="Enter Hostel Number" id="exampleInputEmail1" aria-describedby="emailHelp" name="hostel_number">
+                        <input type="text" class="form-control" placeholder="Enter Hostel Number" name="hostel_number">
 
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Total Rooms</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="total_rooms" placeholder="Enter Total Rooms">
+                        <input type="text" class="form-control" name="total_rooms" placeholder="Enter Total Rooms">
                     </div>
                     <button type="submit" name="create_hostel" class="btn btn-primary">submit</button>
                 </form>
