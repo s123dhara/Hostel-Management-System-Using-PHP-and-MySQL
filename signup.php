@@ -4,9 +4,16 @@ include_once("config/database.php");
 include_once(DIR_URL . "models/student.php");
 
 if (isset($_POST['submit'])) {
+    extract($_POST);
+    if($password != $conf_password) {
+        header("Location:" . BASE_URL . "signup.php");
+        $_SESSION['error'] = "Password Mismatch";
+        exit;
+    }
+
     $res = createStudent($conn, $_POST);
     if ($res) {
-        header("Location:" . BASE_URL);
+        header("Location:" . BASE_URL . "login.php");
         exit;
     } else {
         echo "Something Went Wrong";
@@ -51,6 +58,7 @@ if (isset($_POST['submit'])) {
                                     Novelty Hostel
                                 </h1>
                                 <p class="text-secondary">Create New Account</p>
+                                <?php include_once(DIR_URL . "include/alerts.php") ?>
 
                                 <form method="post" action="<?php BASE_URL ?>signup.php">
                                     <div class="row">
@@ -75,7 +83,7 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Confirm Password</label>
-                                        <input type="password" class="form-control" name="password" required />
+                                        <input type="password" class="form-control" name="conf_password" required />
                                     </div>
                                     <button type="submit" name="submit" class="btn btn-primary">Login</button>
                                 </form>

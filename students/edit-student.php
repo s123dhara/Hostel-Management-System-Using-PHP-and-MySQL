@@ -7,15 +7,22 @@ include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
 
-
-$isAdmin = ($_SESSION['user']['isAdmin']);
+//check VIEW-APPLICATION-PAGE for USER visibility
 $user = $_SESSION['user'];
+$email = $user['email'];
+$user_by_email = getUserByEmail($conn, $email);
+$user_staus = true;
+if (isset($user_by_email) && $user_by_email['student_status'] == NULL) {
+    $_SESSION['error'] = "No Application Form Submitted";
+    $user_staus = false;
+}
+
 
 if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['create_student'])) {
-    echo "<pre>";
-    print_r($_POST);
-    print_r($_FILES);
-    exit;
+    // echo "<pre>";
+    // print_r($_POST);
+    // print_r($_FILES);
+    // exit;
     $res = create_Student_by_admin_or_user($conn, $_POST, $_FILES);
 
     if (isset($res['success']) && $res['success'] == true) {
@@ -29,24 +36,20 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
     }
 }
 
-if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['update_student'])) {
-    // echo "<pre>";
-    // print_r($_POST);
-    // print_r($_FILES);
-    // exit;
-    $res = update_Student_by_admin_or_user($conn, $_POST, $_FILES, $user['student_id'], $user['email']);
+if (isset($_POST['create_room'])) {
+    $res = createRoom($conn, $_POST);
 
-    if (isset($res['success']) && $res['success'] == true) {
-        $_SESSION['success'] = "Student recocrd has been Updated successfully";
-        header("Location: " . BASE_URL . "students");
+    if (isset($res['success'])) {
+        $_SESSION['success'] = "Room has been created successfully";
+        header("Location: " . BASE_URL . "rooms");
         exit;
     } else {
         $_SESSION['error'] = $res['error'];
-        header("Location: " . BASE_URL . "students");
-        exit;
     }
 }
 
+$isAdmin = ($_SESSION['user']['isAdmin']);
+$user = $_SESSION['user'];
 // echo "<pre>";
 // print_r($user);
 // exit;
@@ -61,6 +64,16 @@ include_once(DIR_URL . "include/sidebar.php");
 <!--Main content start-->
 <main class="mt-5 pt-3">
     <div class="container-fluid">
+
+        <?php if (!$user_staus) { ?>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <?php include_once(DIR_URL . "include/alerts.php"); ?>
+                    </div>
+                </div>
+            </div>
+        <?php } else { ?>
         <!--Cards-->
         <div class="row">
             <div class="col-md-12">
@@ -282,7 +295,6 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <div class="mt-3">
 
                                         <!-- Button trigger modal -->
-                                        <?php if($isAdmin) { ?>
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confimationCheckModal">
                                             Submit
                                         </button>
@@ -309,34 +321,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php } else { ?>    
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confimationCheckModal">
-                                            Submit
-                                        </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="confimationCheckModal" tabindex="-1" aria-labelledby="confimationCheckModallLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="confimationCheckModallLabel">Do You want to submit?</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h2 class="text-secondary fw-bold">
-                                                            Please check all details, then Submit
-                                                        </h2>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button name="update_student" type="submit" class="btn btn-outline-success">
-                                                            Confirm
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <?php } ?>   
                                         <button type="reset" class="btn btn-secondary">
                                             Cancel
                                         </button>
@@ -352,6 +337,7 @@ include_once(DIR_URL . "include/sidebar.php");
             </div>
         </div>
 
+        <?php } ?>
     </div>
 </main>
 <!--Main content end-->

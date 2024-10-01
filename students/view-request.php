@@ -2,10 +2,20 @@
 include_once("../config/config.php");
 include_once("../config/database.php");
 
+include_once(DIR_URL . "include/middleware.php");
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
 
+//check VIEW-APPLICATION-PAGE for USER visibility
+$user = $_SESSION['user'];
+$email = $user['email'];
+$user_by_email = getUserByEmail($conn, $email);
+$user_staus = true;
+if (isset($user_by_email) && $user_by_email['student_status'] == NULL) {
+    $_SESSION['error'] = "NO FORM SUBMITTED";
+    $user_staus = false;
+}
 
 
 
@@ -27,7 +37,11 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
 
     if (isset($res['success']) && $res['success'] == true) {
         $_SESSION['success'] = "Student recocrd has been Updated successfully";
-        header("Location: " . BASE_URL . "students");
+        if($user['isAdmin']){
+            header("Location: " . BASE_URL . "students");
+        }else{
+            header("Location: " . BASE_URL . "dashbaord.php");
+        }
         exit;
     } else {
         $_SESSION['error'] = $res['error'];
@@ -39,9 +53,9 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
 
 // From student side 
 // $student_current_id = 3;
-$student_current_id = $_GET['id'];
-$result = getStdent_approve($conn, $student_current_id);
-$isAdmin = checkIsAdmin($conn, $student_current_id);
+$student_current_id = $user['student_id'];
+$result = getStudent_approve($conn, $student_current_id);
+$isAdmin = ($_SESSION['user']['isAdmin']);
 
 
 if (isset($result) && isset($isAdmin) && $result && !$isAdmin) {
@@ -62,11 +76,23 @@ include_once(DIR_URL . "include/topnavbar.php");
 include_once(DIR_URL . "include/sidebar.php");
 ?>
 <!--Main content start-->
-<main class="mt-5 pt-3">
+<main class="mt-3 pt-3">
     <div class="container-fluid">
+
+    <?php if (!$user_staus) { ?>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <?php include_once(DIR_URL . "include/alerts.php"); ?>
+                    </div>
+                </div>
+            </div>
+        <?php } else { ?>   
+
+
         <!--Cards-->
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 p-4">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
                 <h4 class="fw-bold text-uppercase">Details of Student</h4>
             </div>
@@ -260,7 +286,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 View Document
                                             </button>
                                             <div class="d-flex align-items-center">
-                                                <input type="file" name="id_proof" class="form-control gap-1 m-2"  />
+                                                <input type="file" name="id_proof" class="form-control gap-1 m-2" />
                                                 <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
                                             </div>
 
@@ -332,7 +358,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 View Document
                                             </button>
                                             <div class="d-flex align-items-center">
-                                                <input type="file" name="photo" class="form-control gap-1 m-2"  />
+                                                <input type="file" name="photo" class="form-control gap-1 m-2" />
                                                 <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
                                             </div>
 
@@ -372,7 +398,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                         <?php if (isset($isAdmin) && $isAdmin && !$result) { ?>
                                             <!-- if admin then show it  -->
                                             <!-- Button trigger modal -->
-                                            
+
                                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Approve_Modal">
                                                 Approve
                                             </button>
@@ -404,7 +430,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 Reject
                                             </button>
 
-                                            
+
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="Reject_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
@@ -430,7 +456,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 </div>
                                             </div>
 
-                                        <?php } else if ( (isset($isAdmin)  && !$isAdmin && !$result)  || (isset($isAdmin) && $isAdmin && $result) ) { ?>
+                                        <?php } else if ((isset($isAdmin)  && !$isAdmin && !$result)  || (isset($isAdmin) && $isAdmin && $result)) { ?>
 
                                             <!-- From Student side not approved or Admin Side can change it -->
 
@@ -456,7 +482,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                             <button type="submit" name="update_student" class="btn btn-outline-success">
                                                                 Confirm
-                                                            </a>
+                                                                </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -467,9 +493,9 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 Cancel
                                             </a>
 
-                                        <?php } ?> 
+                                        <?php } ?>
 
-                                  
+
                                     </div>
                                 </div>
                             </div>
@@ -478,6 +504,8 @@ include_once(DIR_URL . "include/sidebar.php");
                 </div>
             </div>
         </div>
+
+        <?php } ?>
     </div>
 </main>
 <!--Main content end-->

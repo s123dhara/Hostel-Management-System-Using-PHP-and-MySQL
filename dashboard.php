@@ -1,8 +1,10 @@
 <?php include_once("config/config.php");
 include_once("config/database.php");
+include_once(DIR_URL . "include/middleware.php");
 
 ?>
 <?php
+
 include_once("./include/header.php");
 include_once("./include/topnavbar.php");
 include_once("./include/sidebar.php");
@@ -18,12 +20,14 @@ if ($pending_students && $pending_students->num_rows > 0) {
     $pending_students_result = true; // Set to true if any pending students exist
 }
 
+$isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
+
 
 ?>
 
 <main class="mt-5 pt-3">
 
-    <?php if (true) { ?>
+    <?php if ($isAdmin) { ?>
 
         <div class="container-fluid">
             <div class="row">

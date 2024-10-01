@@ -1,4 +1,33 @@
-<?php include_once("config/config.php") ?>
+<?php
+include_once("config/config.php");
+include_once("config/database.php");
+include_once(DIR_URL . "models/auth.php");
+
+if(isset($_SESSION['is_user_login'])) {
+    header("LOCATION: " . BASE_URL . 'dashboard.php');
+    exit;
+}
+
+
+// Login Functionality (pizza123)
+if (isset($_POST['submit'])) {
+    $res = login($conn, $_POST);
+    if ($res['status'] == true) {
+        $_SESSION['is_user_login'] = true;
+        $_SESSION['user'] = $res['user'];
+        header("LOCATION: " . BASE_URL . 'dashboard.php');
+        exit;
+    } else {
+        $_SESSION['error'] = "Invalid login information";
+        header("LOCATION: " . BASE_URL . "login.php");
+        exit;
+    }
+}
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,8 +60,9 @@
                                     Novelty Hostel
                                 </h1>
                                 <p class="text-secondary">Enter email and password to login</p>
+                                <?php include_once(DIR_URL . "include/alerts.php") ?>
 
-                                <form method="post" action="./dashboard.php">
+                                <form method="post" action="<?php echo BASE_URL ?>login.php">
                                     <div class="mb-3">
                                         <label class="form-label">Email address</label>
                                         <input type="email" class="form-control" name="email" />

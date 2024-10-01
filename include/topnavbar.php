@@ -7,7 +7,7 @@
         </button>
         <!--offcanvar trigger start-->
 
-        <a class="navbar-brand fw-bold text-uppercase me-auto" href="#">Novelty Hostel</a>
+        <a class="navbar-brand fw-bold text-uppercase me-auto" href="<?php echo BASE_URL ?>">Novelty Hostel</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,7 +26,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo BASE_URL ?>assets/images/user.jpg" class="user-icon" />
-                        Hi admin
+                        <?php if(isset($_SESSION['user']['isAdmin']) && $_SESSION['user']['isAdmin']) { ?>
+                            Hi Admin
+                        <?php } else { ?>
+                            <?php echo $_SESSION['user']['email'] ?>
+                        <?php }?>
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -36,7 +40,7 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
-                            <a class="dropdown-item" href="">Logout</a>
+                            <a class="dropdown-item" href="<?php echo BASE_URL ?>logout.php">Logout</a>
                         </li>
                     </ul>
                 </li>

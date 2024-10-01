@@ -17,7 +17,7 @@
                 </li>
 
 
-                <?php if(true) { ?>
+                <?php if($_SESSION['user']['isAdmin']) { ?>
 
                 <li>
                     <div class="text-secondary small fw-bold text-uppercase">
@@ -156,7 +156,7 @@
                                     <a href="<?php echo BASE_URL ?>students/add-student.php" class="nav-link"><i class="fa-solid fa-plus me-2"></i>Application Form</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>rooms/" class="nav-link"><i class="fa-solid fa-list me-2"></i> View Application Form</a>
+                                    <a href="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $_SESSION['user']['student_id'] ?>" class="nav-link"><i class="fa-solid fa-list me-2"></i> View Application Form</a>
                                 </li>
                             </ul>
                         </div>

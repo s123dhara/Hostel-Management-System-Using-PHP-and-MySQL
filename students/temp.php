@@ -79,7 +79,7 @@ $res = $conn->query($SQL);
 
 $rooms_store_array = array();
 
-while($room = $res->fetch_assoc()) {
+while ($room = $res->fetch_assoc()) {
     array_push($rooms_store_array, $room['room_number']);
 }
 
@@ -89,7 +89,9 @@ print_r($rooms_store_array);
 $random_index = array_rand($rooms_store_array);
 
 // Output the random room number using the random index
-echo "\nRandom Room Number: " . $rooms_store_array[$random_index];
+$pass = 1;
+$hash = password_hash($pass, PASSWORD_DEFAULT);
+echo $hash;
 exit;
 
 

@@ -1,5 +1,7 @@
 <?php include_once("../config/config.php");
 include_once("../config/database.php");
+
+include_once(DIR_URL . "include/middleware.php");
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
@@ -7,6 +9,7 @@ include_once(DIR_URL . "models/student.php");
 ?>
 
 <?php
+
 
 $students = getAllStudents($conn, 'Pending');
 if (!isset($students->num_rows)) {
@@ -105,7 +108,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                     <td><?php echo date("d-m-Y", strtotime($row['apply_date'])) ?></td>
                                                     <td><span class="badge text-bg-warning"><?php echo $row['student_status'] ?></span></td>
                                                     <td>
-                                                        <a href="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $row['id'] ?>" target="_blank" class="btn btn-info btn-sm">View</a>
+                                                        <a href="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $row['id'] ?>" class="btn btn-info btn-sm">View</a>
 
                                                     </td>
                                                 </tr>
