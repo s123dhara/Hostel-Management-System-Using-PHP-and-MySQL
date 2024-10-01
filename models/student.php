@@ -43,9 +43,13 @@ function createStudent($conn, $params)
     }
 }
 
-function create_student_by_admin($conn, $params, $files)
+function create_Student_by_admin_or_user($conn, $params, $files)
 {
     $result = array('success' => '', 'error' => '');
+    // echo "<pre>";
+    // print_r($params);
+    // print_r($files);
+    // // exit;
 
     // Extract all fields from the $params array
     $first_name      = $params['first_name'];
@@ -55,6 +59,7 @@ function create_student_by_admin($conn, $params, $files)
     $gender          = $params['gender'];
     $email           = $params['email'];
     $guardian_name   = $params['guardian_name'];
+    $phone_number = $params['phone_number'];
     $guardian_phone_number = $params['guardian_phone_number'];
     $guardian_relationship = $params['guardian_relationship'];
     $address         = $params['address'];
@@ -173,10 +178,11 @@ function create_student_by_admin($conn, $params, $files)
         $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
         $current_student_status = "Pending";
 
-        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, email, guardian_name, guardian_phone_number, guardian_relationship, address, state, pincode, institute_name, semester, stream, course, admission_date, created_at, document_id, apply_date, student_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)");
+        $stmt = $conn->prepare("INSERT INTO students (first_name, middle_name, last_name, date_of_birth, gender, phone_number, email, address, state, town_village, pincode, guardian_name, guardian_phone_number, guardian_relationship, admission_date, institute_name, semester, stream, course, student_status, created_at, apply_date, document_id) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+        $stmt->bind_param("ssssssssssssssssssssssi", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $phone_number, $email, $address, $state, $town_village, $pincode, $guardian_name, $guardian_phone_number, $guardian_relationship, $admission_date_mysql, $institute_name, $semester, $stream, $course, $current_student_status, $datetime, $datetime, $document_id);
 
-        $stmt->bind_param("ssssssssssssssssssssss", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $document_id, $datetime, $current_student_status, $town_village);
 
         if ($stmt->execute()) {
             $result['success'] = true;
@@ -218,9 +224,9 @@ function handle_file_upload($file, $allowed_formats, $name)
 function getAllStudents($conn, $type = NULL)
 {
     // $sql = "SELECT id,first_name, last_name, stream, course, semester FROM students";
-    if($type == NULL) {
+    if ($type == NULL) {
         $sql = "SELECT * FROM students WHERE student_status = 'Approved'";
-    }else {
+    } else {
         $sql = "SELECT * FROM students WHERE student_status = 'Pending'";
     }
     $result = $conn->query($sql);
@@ -242,7 +248,7 @@ function assign_room_number($conn, $student_id)
     $SQL = "SELECT id FROM rooms WHERE room_status = 'Available'";
     $res = $conn->query($SQL);
 
-    if(!$res->num_rows > 0) {
+    if (!$res->num_rows > 0) {
         return array('error' => "NO ROOM IS AVAILABLE");
     }
 
@@ -251,7 +257,7 @@ function assign_room_number($conn, $student_id)
         array_push($rooms_store_array, $room['id']);
     }
 
-     // Generate a random index from the array
+    // Generate a random index from the array
     $random_index = array_rand($rooms_store_array);
     $alloted_room_id = $rooms_store_array[$random_index];
 
@@ -260,13 +266,13 @@ function assign_room_number($conn, $student_id)
     $store_result = $res->fetch_assoc();
     $current_occupancy = $store_result['current_occupancy'];
     $max_occupancy = $store_result['max_occupancy'];
-    
+
     $SQL = "UPDATE rooms SET current_occupancy = $current_occupancy + 1 WHERE 
             id = $alloted_room_id";
     $res = $conn->query($SQL);
-    
+
     //if max_occupancy achive
-    if($max_occupancy == $current_occupancy + 1) {
+    if ($max_occupancy == $current_occupancy + 1) {
         $SQL = "UPDATE rooms SET room_status = 'Occupied' WHERE id = $alloted_room_id";
         $res = $conn->query($SQL);
     }
@@ -276,4 +282,270 @@ function assign_room_number($conn, $student_id)
     $res = $conn->query($SQL);
 
     return array('success' => "Sucessfully Assigned Room to Students ");
+}
+
+
+function getStdent_approve($conn, $student_id)
+{
+
+    $SQL = "SELECT student_status FROM students WHERE id = $student_id";
+    $res = $conn->query($SQL);
+    $res = $res->fetch_assoc();
+    $student_current_status = $res['student_status'];
+
+    return $student_current_status == 'Approved' ? true : false;
+}
+
+
+function update_Student_by_admin_or_user($conn, $params, $files, $student_id)
+{
+
+    // echo "<pre>";
+    // print_r($files);
+    // exit;
+
+    $result = array('success' => '', 'error' => '');
+
+    // Extract all fields from the $params array
+    $first_name      = $params['first_name'];
+    $middle_name     = $params['middle_name'];
+    $last_name       = $params['last_name'];
+    $date_of_birth   = $params['date_of_birth'];
+    $gender          = $params['gender'];
+    $email           = $params['email'];
+    $guardian_name   = $params['guardian_name'];
+    $phone_number = $params['phone_number'];
+    $guardian_phone_number = $params['guardian_phone_number'];
+    $guardian_relationship = $params['guardian_relationship'];
+    $address         = $params['address'];
+    $state           = $params['state'];
+    $town_village = $params['town_village'];
+    $pincode         = $params['pincode'];
+    $institute_name  = $params['institute_name'];
+    $semester        = $params['semester'];
+    $stream          = $params['stream'];
+    $course          = $params['course'];
+    $admission_date  = $params['admission_date'];
+
+    // File uploads
+    $id_proof = $files['id_proof'];
+    $admission_receipt = $files['admission_receipt'];
+    $photo = $files['photo'];
+
+    // Allowed formats for images
+    $allowed_formats = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    // Validate each required field
+    if (empty($first_name)) {
+        $result['error'] = "First Name is required.";
+        return $result;
+    }
+    if (empty($last_name)) {
+        $result['error'] = "Last Name is required.";
+        return $result;
+    }
+    if (empty($date_of_birth)) {
+        $result['error'] = "Date of Birth is required.";
+        return $result;
+    }
+    if (empty($gender)) {
+        $result['error'] = "Gender is required.";
+        return $result;
+    }
+    if (empty($email)) {
+        $result['error'] = "Email is required.";
+        return $result;
+    }
+    if (empty($phone_number)) {
+        $result['error'] = "phone_number is required.";
+        return $result;
+    }
+    if (empty($guardian_name)) {
+        $result['error'] = "Guardian Name is required.";
+        return $result;
+    }
+    if (empty($address)) {
+        $result['error'] = "Address is required.";
+        return $result;
+    }
+    if (empty($state)) {
+        $result['error'] = "State is required.";
+        return $result;
+    }
+    if (empty($town_village)) {
+        $result['error'] = "Town/Village is required.";
+        return $result;
+    }
+    if (empty($pincode)) {
+        $result['error'] = "Pincode is required.";
+        return $result;
+    }
+    if (empty($institute_name)) {
+        $result['error'] = "Institute Name is required.";
+        return $result;
+    }
+    if (empty($semester)) {
+        $result['error'] = "Semester is required.";
+        return $result;
+    }
+    if (empty($stream)) {
+        $result['error'] = "Stream is required.";
+        return $result;
+    }
+    if (empty($course)) {
+        $result['error'] = "Course is required.";
+        return $result;
+    }
+    if (empty($admission_date)) {
+        $result['error'] = "Admission Date is required.";
+        return $result;
+    }
+
+    $datetime = date("Y-m-d H:i:s");
+
+    // Handle file uploads conditionally based on whether each file is provided
+    $update_photo = !empty($files['photo']['name']);
+    $update_id_proof = !empty($files['id_proof']['name']);
+    $update_admission_receipt = !empty($files['admission_receipt']['name']);
+
+    // Handle photo upload
+    if ($update_photo) {
+        $photo_result = handle_file_upload($photo, $allowed_formats, "Photo");
+        if (isset($photo_result['error'])) {
+            return ['error' => $photo_result['error']];
+        }
+    }
+
+    // Handle ID proof upload
+    if ($update_id_proof) {
+        $id_proof_result = handle_file_upload($id_proof, $allowed_formats, "ID Proof");
+        if (isset($id_proof_result['error'])) {
+            return ['error' => $id_proof_result['error']];
+        }
+    }
+
+    // Handle admission receipt upload
+    if ($update_admission_receipt) {
+        $admission_receipt_result = handle_file_upload($admission_receipt, $allowed_formats, "Admission Receipt");
+        if (isset($admission_receipt_result['error'])) {
+            return ['error' => $admission_receipt_result['error']];
+        }
+    }
+
+    // Build the SQL query conditionally for file updates
+    $sql = "UPDATE documents SET ";
+    $params = array();
+    $types = "";
+
+    // Append query for each file if it is being updated
+    if ($update_photo) {
+        $sql .= "photo = ?, photo_type = ?, ";
+        $params[] = $photo_result['content'];
+        $params[] = $photo['type'];
+        $types .= "bs";
+    }
+
+    if ($update_id_proof) {
+        $sql .= "id_proof = ?, id_proof_type = ?, ";
+        $params[] = $id_proof_result['content'];
+        $params[] = $id_proof['type'];
+        $types .= "bs";
+    }
+
+    if ($update_admission_receipt) {
+        $sql .= "admission_receipt = ?, admission_receipt_type = ?, ";
+        $params[] = $admission_receipt_result['content'];
+        $params[] = $admission_receipt['type'];
+        $types .= "bs";
+    }
+
+    // Complete the query by adding the remaining fields
+    $sql .= "updated_at = ? WHERE id = (SELECT document_id FROM students WHERE id = ?)";
+    $params[] = $datetime;
+    $params[] = $student_id;
+    $types .= "si";
+
+    // Prepare and bind the parameters dynamically
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+
+    // Send large data chunks if necessary
+    $param_index = 0;
+    if ($update_photo) {
+        $stmt->send_long_data($param_index++, $photo_result['content']);
+    }
+    if ($update_id_proof) {
+        $stmt->send_long_data($param_index++, $id_proof_result['content']);
+    }
+    if ($update_admission_receipt) {
+        $stmt->send_long_data($param_index++, $admission_receipt_result['content']);
+    }
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        // Prepare and execute the student update query
+        $dob_mysql = date("Y-m-d", strtotime($date_of_birth));
+        $admission_date_mysql = date("Y-m-d", strtotime($admission_date));
+
+        $stmt = $conn->prepare("UPDATE students 
+                                SET first_name = ?, middle_name = ?, last_name = ?, date_of_birth = ?, gender = ?, email = ?, guardian_name = ?, guardian_phone_number = ?, guardian_relationship = ?, address = ?, state = ?, pincode = ?, institute_name = ?, semester = ?, stream = ?, course = ?, admission_date = ?, updated_at = ?, town_village = ? , phone_number = ?
+                                WHERE id = ?");
+
+        $stmt->bind_param("ssssssssssssssssssssi", $first_name, $middle_name, $last_name, $dob_mysql, $gender, $email, $guardian_name, $guardian_phone_number, $guardian_relationship, $address, $state, $pincode, $institute_name, $semester, $stream, $course, $admission_date_mysql, $datetime, $town_village, $phone_number, $student_id);
+
+        if ($stmt->execute()) {
+            $result['success'] = true;
+        } else {
+            $result['error'] = "Failed to update student record.";
+        }
+    } else {
+        $result['error'] = "Failed to update documents.";
+    }
+
+    return $result;
+}
+
+
+function checkIsAdmin($conn, $id)
+{
+    $SQL = "SELECT isAdmin FROM users WHERE student_id = $id";
+    $res = $conn->query($SQL);
+    $res = $res->fetch_assoc();
+
+    // echo "<pre>";
+    // print_r($res);
+    // exit;
+
+    // return ($res['isAdmin'] == 0) ? false : true;
+    return ($res['isAdmin'] == 0) ? true : false;
+}
+
+function deleteStudent($conn, $student_id)
+{
+    $check_approve_or_not = getStdent_approve($conn, $student_id);
+
+    if ($check_approve_or_not) {
+        $SQL = "SELECT room_id FROM students WHERE id = $student_id";
+        $res = $conn->query($SQL);
+        $res = $res->fetch_assoc();
+        $find_room_id = $res['room_id'];
+
+        $SQL = "UPDATE rooms SET current_occupancy = (SELECT current_occupancy FROM rooms WHERE id = $find_room_id) - 1 WHERE id = $find_room_id";
+        $res = $conn->query($SQL);
+    }
+
+    $SQL = "DELETE FROM documents WHERE id = (SELECT document_id FROM students WHERE id = $student_id)";
+    $res = $conn->query($SQL);
+
+    if ($res) {
+        $SQL = "DELETE FROM students WHERE id = $student_id";
+        $new_res = $conn->query($SQL);
+
+        if ($new_res) {
+            return array('success' => "Student Record Successfully Deleted");
+        } else {
+
+            return array('error' => "Error " . $conn->error);
+        }
+    }
 }

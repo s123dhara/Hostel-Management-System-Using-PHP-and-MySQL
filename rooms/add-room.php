@@ -84,7 +84,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                         <input type="text" name="floor_number" class="form-control" required />
                                     </div>
                                 </div>
-                        
+
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -100,6 +100,13 @@ include_once(DIR_URL . "include/sidebar.php");
                                                 <option value="<?php echo $type; ?>"><?php echo $type; ?></option>
                                             <?php } ?>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Max Capacity</label>
+                                        <input type="text" name="max_occupancy" class="form-control" required />
                                     </div>
                                 </div>
 

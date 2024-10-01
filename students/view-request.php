@@ -6,6 +6,9 @@ include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
 
+
+
+
 if (isset($_GET) && isset($_GET['id'])) {
     $id = $_GET['id'];
     $query = "SELECT * FROM students WHERE id = $id";
@@ -13,6 +16,43 @@ if (isset($_GET) && isset($_GET['id'])) {
     $row = $result->fetch_assoc();
     $img_id = $row['document_id'];
 }
+
+
+if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['update_student'])) {
+    // echo "<pre>";
+    // print_r($_POST);
+    // print_r($_FILES);
+    // exit;
+    $res = update_Student_by_admin_or_user($conn, $_POST, $_FILES, $_GET['id']);
+
+    if (isset($res['success']) && $res['success'] == true) {
+        $_SESSION['success'] = "Student recocrd has been Updated successfully";
+        header("Location: " . BASE_URL . "students");
+        exit;
+    } else {
+        $_SESSION['error'] = $res['error'];
+        header("Location: " . BASE_URL . "students");
+        exit;
+    }
+}
+
+
+// From student side 
+// $student_current_id = 3;
+$student_current_id = $_GET['id'];
+$result = getStdent_approve($conn, $student_current_id);
+$isAdmin = checkIsAdmin($conn, $student_current_id);
+
+
+if (isset($result) && isset($isAdmin) && $result && !$isAdmin) {
+    //means approved student
+    // Cannot update details
+
+    $_SESSION['error'] = "You Cann't Update the Form";
+    // header("Location:" . BASE_URL . "students/view-request.php?id=". 5);
+    // exit;
+}
+
 
 ?>
 
@@ -37,7 +77,7 @@ include_once(DIR_URL . "include/sidebar.php");
                         Basic Details
                     </div>
                     <div class="card-body">
-                        <form method="post" action="<?php echo BASE_URL ?>students/add-student.php" enctype="multipart/form-data">
+                        <form method="post" action="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
@@ -219,6 +259,10 @@ include_once(DIR_URL . "include/sidebar.php");
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#id_proof_modal">
                                                 View Document
                                             </button>
+                                            <div class="d-flex align-items-center">
+                                                <input type="file" name="id_proof" class="form-control gap-1 m-2"  />
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                            </div>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="id_proof_modal" tabindex="-1" aria-labelledby="id_proof_modal_Label" aria-hidden="true">
@@ -252,6 +296,10 @@ include_once(DIR_URL . "include/sidebar.php");
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#admission_receipt_modal">
                                                 View Document
                                             </button>
+                                            <div class="d-flex align-items-center">
+                                                <input type="file" name="admission_receipt" class="form-control gap-1 m-2" />
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                            </div>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="admission_receipt_modal" tabindex="-1" aria-labelledby="admission_receipt_modal_Label" aria-hidden="true">
@@ -283,6 +331,10 @@ include_once(DIR_URL . "include/sidebar.php");
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#photograph_modal">
                                                 View Document
                                             </button>
+                                            <div class="d-flex align-items-center">
+                                                <input type="file" name="photo" class="form-control gap-1 m-2"  />
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="popover" data-bs-title="Important Details" data-bs-content="Only .png, .jpeg, and .jpg formats are allowed"><i class="fa-solid fa-exclamation"></i></button>
+                                            </div>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="photograph_modal" tabindex="-1" aria-labelledby="photograph_modalLabel" aria-hidden="true">
@@ -297,7 +349,6 @@ include_once(DIR_URL . "include/sidebar.php");
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -315,61 +366,110 @@ include_once(DIR_URL . "include/sidebar.php");
                                 <div class="col-md-12">
                                     <div class="mt-3">
 
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Approve_Modal">
-                                            Approve
-                                        </button>
+                                        <?php
+                                        ?>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="Approve_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5 text-success fw-bold text-uppercase" id="Reject_Modal_Label">Are You sure?</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h2 class="text-secondary fw-bold">
-                                                            Do you want to Confirm? Then Click On <strong>Approve</strong>
-                                                        </h2>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=approved" class="btn btn-outline-success">
-                                                            Approve
-                                                        </a>
+                                        <?php if (isset($isAdmin) && $isAdmin && !$result) { ?>
+                                            <!-- if admin then show it  -->
+                                            <!-- Button trigger modal -->
+                                            
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Approve_Modal">
+                                                Approve
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="Approve_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 text-success fw-bold text-uppercase" id="Reject_Modal_Label">Are You sure?</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h2 class="text-secondary fw-bold">
+                                                                Do you want to Confirm? Then Click On <strong>Approve</strong>
+                                                            </h2>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=approved" class="btn btn-outline-success">
+                                                                Approve
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="Reject_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5 text-danger fw-bold text-uppercase" id="Reject_Modal_Label">Reason for Rejection</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body w-100">
-                                                        <form action="">
-                                                            <textarea class="form-control" style="resize: none;" id="rejectionReason" rows="5"></textarea>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=reject" class="btn btn-outline-danger">
-                                                                    Reject
-                                                                </a>
-                                                            </div>
-                                                        </form>
+                                            <button type="reset" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Reject_Modal">
+                                                Reject
+                                            </button>
 
+                                            
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="Reject_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 text-danger fw-bold text-uppercase" id="Reject_Modal_Label">Reason for Rejection</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body w-100">
+                                                            <form action="">
+                                                                <textarea class="form-control" style="resize: none;" id="rejectionReason" rows="5"></textarea>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=reject" class="btn btn-outline-danger">
+                                                                        Reject
+                                                                    </a>
+                                                                </div>
+                                                            </form>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <button type="reset" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Reject_Modal">
-                                            Reject
-                                        </button>
+                                        <?php } else if ( (isset($isAdmin)  && !$isAdmin && !$result)  || (isset($isAdmin) && $isAdmin && $result) ) { ?>
+
+                                            <!-- From Student side not approved or Admin Side can change it -->
+
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStudent_Modal">
+                                                Update
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="editStudent_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 text-success fw-bold text-uppercase" id="Reject_Modal_Label">Are You sure?</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h2 class="text-secondary fw-bold">
+                                                                Do you want to Confirm? Then Click On <strong>Update Details</strong>
+                                                            </h2>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" name="update_student" class="btn btn-outline-success">
+                                                                Confirm
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <a href="<?php echo BASE_URL ?>dashboard.php" class="btn btn-secondary">
+                                                Cancel
+                                            </a>
+
+                                        <?php } ?> 
+
+                                  
                                     </div>
                                 </div>
                             </div>
@@ -382,35 +482,6 @@ include_once(DIR_URL . "include/sidebar.php");
 </main>
 <!--Main content end-->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?php echo BASE_URL ?>rooms/add_room.php" method="post">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Hostel Number</label>
-                        <input type="text" class="form-control" placeholder="Enter Hostel Number" id="exampleInputEmail1" aria-describedby="emailHelp" name="hostel_number">
 
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Total Rooms</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="total_rooms" placeholder="Enter Total Rooms">
-                    </div>
-                    <button type="submit" name="create_hostel" class="btn btn-primary">submit</button>
-                </form>
-                <!-- <button type="button" name="create_hostel" class="btn btn-primary">submit</button> -->
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Button trigger modal -->
 
 <?php include_once(DIR_URL . "include/footer.php") ?>

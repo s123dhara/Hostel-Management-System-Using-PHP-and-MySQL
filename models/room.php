@@ -34,17 +34,20 @@ function createRoom($conn, $params)
     } else if (empty($room_type)) {
         return array("error" => "Room type is Required");
     }
+    else if (empty($max_occupancy)) {
+        return array("error" => "Max Occupancy is Required");
+    }
 
     // Prepare the date and time
     $datetime = date("Y-m-d H:i:s");
 
     // Prepare the SQL query using prepared statements
-    $sql = "INSERT INTO rooms (hostel_id, room_number, floor_number, room_type,created_at) 
-            VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO rooms (hostel_id, room_number, floor_number, room_type, max_occupancy ,created_at) 
+            VALUES (?, ?, ?, ?, ? ,?)";
 
     // Use a prepared statement to execute the query securely
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issss", $hostel_id, $room_number, $floor_number, $room_type, $datetime);
+    $stmt->bind_param("isssss", $hostel_id, $room_number, $floor_number, $room_type, $max_occupancy ,$datetime);
 
     // Execute the insert query and check for success
     $res = $stmt->execute();

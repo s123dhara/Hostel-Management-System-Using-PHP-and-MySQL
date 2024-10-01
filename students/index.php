@@ -9,13 +9,13 @@ include_once(DIR_URL . "models/student.php");
 
 ## Delete Rooms
 if (isset($_GET['action']) && $_GET['action'] == 'delete') {
-    $del = deleteBook($conn, $_GET['id']);
-    if ($del) {
-        $_SESSION['success'] = "Room has been deleted successfully";
-    } else {
-        $_SESSION['error'] = "Something went wrong";
+    $del_result = deleteStudent($conn, $_GET['id']);
+    if (isset($del_result) && isset($del_result['success'])) {
+        $_SESSION['success'] = $del_result['success'];
+    } else{
+        $_SESSION['error'] = $del_result['error'];
     }
-    header("LOCATION: " . BASE_URL . "rooms");
+    header("LOCATION: " . BASE_URL . "students");
     exit;
 }
 
@@ -72,11 +72,11 @@ include_once(DIR_URL . "include/sidebar.php");
                 <h4 class="fw-bold text-uppercase">Manage Rooms
                     <a href="<?php echo BASE_URL ?>students/pending-request.php" class="btn btn-warning position-relative float-end mb-2">
                         Pending Request
-                        <?php 
-                        if($pending_students_result) {?>
-                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New alerts</span>
-                        </span>
+                        <?php
+                        if ($pending_students_result) { ?>
+                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
                         <?php } ?>
                     </a>
                 </h4>
@@ -133,8 +133,26 @@ include_once(DIR_URL . "include/sidebar.php");
                                                     <td>10/09/25</td>
                                                     <td><span class="badge text-bg-success">Running</span></td>
                                                     <td>
-                                                        <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <button class="btn btn-danger btn-sm" data-bs-target="#staticBackdrop" data-bs-toggle="modal">Delete</button>
+                                                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Are You Want to Remove?</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <h2 class="text-danger fw-bold">Changes are permanent cannot be updated</h2>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                                                        <a href="<?php echo BASE_URL ?>students?action=delete&id=<?php echo $row['id'] ?>" class="btn btn-outline-danger btn-sm">Confirm</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </td>
                                                 </tr>
 

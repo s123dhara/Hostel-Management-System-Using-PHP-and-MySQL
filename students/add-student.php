@@ -12,7 +12,7 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
     // print_r($_POST);
     // print_r($_FILES);
     // exit;
-    $res = create_Student_by_admin($conn, $_POST, $_FILES);
+    $res = create_Student_by_admin_or_user($conn, $_POST, $_FILES);
 
     if (isset($res['success']) && $res['success'] == true) {
         $_SESSION['success'] = "Student recocrd has been created successfully";
@@ -50,7 +50,11 @@ include_once(DIR_URL . "include/sidebar.php");
         <div class="row">
             <div class="col-md-12">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
+                <?php if(false) { ?>
                 <h4 class="fw-bold text-uppercase">Add New Student</h4>
+                <?php } else { ?>
+                    <h4 class="fw-bold text-uppercase">Fill the application form</h4>
+                <?php } ?>
             </div>
 
             <div class="col-md-12">
@@ -257,16 +261,16 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <div class="mt-3">
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confimationCheckModal">
                                             Submit
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="confimationCheckModal" tabindex="-1" aria-labelledby="confimationCheckModallLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You want to submit?</h1>
+                                                        <h1 class="modal-title fs-5" id="confimationCheckModallLabel">Do You want to submit?</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">

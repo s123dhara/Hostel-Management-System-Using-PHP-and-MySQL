@@ -23,7 +23,7 @@ if ($pending_students && $pending_students->num_rows > 0) {
 
 <main class="mt-5 pt-3">
 
-    <?php if (false) { ?>
+    <?php if (true) { ?>
 
         <div class="container-fluid">
             <div class="row">
