@@ -17,34 +17,6 @@ if (!isset($students->num_rows)) {
 }
 
 
-## Delete Rooms
-if (isset($_GET['action']) && $_GET['action'] == 'delete') {
-    $del = deleteBook($conn, $_GET['id']);
-    if ($del) {
-        $_SESSION['success'] = "Room has been deleted successfully";
-    } else {
-        $_SESSION['error'] = "Something went wrong";
-    }
-    header("LOCATION: " . BASE_URL . "rooms");
-    exit;
-}
-
-#update status & rooms
-if (isset($_GET['action']) && $_GET['action'] == 'status') {
-    $_SESSION['setStatus'] = 1;
-    if (isset($_SESSION['setStatus'])) {
-        if ($_GET['status'] == 1)
-            $msg = "Room has been successfully activated";
-        else $msg = "room has been successfully deactivated";
-
-        $_SESSION['success'] = $msg;
-    } else {
-        $_SESSION['error'] = "Something went wrong";
-    }
-    header("LOCATION: " . BASE_URL . "rooms");
-    exit;
-}
-
 ?>
 
 

@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
                                         <label class="form-label">Confirm Password</label>
                                         <input type="password" class="form-control" name="conf_password" required />
                                     </div>
-                                    <button type="submit" name="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" name="submit" class="btn btn-primary">Signup</button>
                                 </form>
 
                                 <hr />

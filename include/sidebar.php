@@ -61,6 +61,10 @@
                                     <a href="<?php echo BASE_URL ?>students/add-student.php" class="nav-link"><i class="fa-solid fa-plus me-2"></i> Add New</a>
                                 </li>
                                 <li>
+                                        <!-- those who haven't paid their payment of booking but Assign a room -->
+                                    <a href="<?php echo BASE_URL ?>students/approved-student.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Approved List</a>
+                                </li>
+                                <li>
                                     <a href="<?php echo BASE_URL ?>students" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
                                 </li>
                             </ul>
@@ -132,6 +136,41 @@
                 <li class="my-0">
                     <hr />
                 </li>
+                 
+                
+                <li>
+                    <div class="text-secondary small fw-bold text-uppercase">
+                        Booking Plans
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link sidebar-link" data-bs-toggle="collapse" href="#planmgmt" role="button" aria-expanded="false" aria-controls="booksManagement">
+                        <i class="fa-solid fa-book me-2"></i>
+                        Plans
+                        <span class="right-icon float-end"><i class="fas fa-chevron-down"></i></span>
+                    </a>
+
+                    <div class="collapse" id="planmgmt">
+                        <div>
+                            <ul class="navbar-nav ps-3">
+                    
+                                <li>
+                                    <a href="<?php echo BASE_URL ?>plans/add-plan.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Add Plan</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo BASE_URL ?>plans/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </li>
+
+                <li class="my-0">
+                    <hr />
+                </li>
+                
 
             <?php } else { ?>        
 

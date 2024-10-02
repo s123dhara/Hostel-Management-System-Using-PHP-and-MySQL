@@ -224,7 +224,7 @@ function handle_file_upload($file, $allowed_formats, $name)
 function getAllStudents($conn, $type = NULL)
 {
     // $sql = "SELECT id,first_name, last_name, stream, course, semester FROM students";
-    if ($type == NULL) {
+    if ($type == NULL ) {
         $sql = "SELECT * FROM students WHERE student_status = 'Approved'";
     } else {
         $sql = "SELECT * FROM students WHERE student_status = 'Pending'";
