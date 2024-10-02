@@ -5,75 +5,77 @@ include_once("../config/database.php");
 include_once(DIR_URL . "include/middleware.php");
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
+include_once(DIR_URL . "models/user.php");
 include_once(DIR_URL . "models/student.php");
 
-//check VIEW-APPLICATION-PAGE for USER visibility
-$user = $_SESSION['user'];
-if (isset($_GET) && isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $query = "SELECT * FROM students WHERE id = $id";
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
-    $img_id = $row['document_id'];
-}
-
-
-if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['update_student'])) {
-   
-    $res = update_Student_by_admin($conn, $_POST, $_FILES, $_GET['id']);
-
-    if (isset($res['success']) && $res['success'] == true) {
-        $_SESSION['success'] = "Student recocrd has been Updated successfully";
-        if ($user['isAdmin']) {
-            header("Location: " . BASE_URL . "students");
-        } else {
-            header("Location: " . BASE_URL . "dashbaord.php");
-        }
-        exit;
-    } else {
-        $_SESSION['error'] = $res['error'];
-        header("Location: " . BASE_URL . "students");
-        exit;
-    }
-}
-
-
-$user = $_SESSION['user'];
-$isAdmin = $user['isAdmin'] ?? false;
-// echo "<pre>";
-// print_r($user);
-// exit;
-
-if (!$isAdmin) {
-    // If the user is an admin, fetch student ID from user data
-    $student_current_id = $user['student_id'];
-    $result_approved = getStudent_approve($conn, $student_current_id);
-} else {
-    // If not admin, check if student ID is passed in URL
-    if (isset($_GET['id'])) {
-        // Ensure the ID is an integer for security
-        $student_current_id = intval($_GET['id']);
-        $result_approved = getStudent_approve($conn, $student_current_id);
-        // echo "<pre>";
-        // print_r($result_approved);
-        // exit;
-    } else {
-        $_SESSION['error'] = "Invalid request.";
-        header("Location: " . BASE_URL . "students/index.php");
-        exit;
-    }
-}
-
-// Check if the student is approved and not an admin
-if (isset($result_approved) && $result_approved && !$isAdmin) {
-    // Student is approved and not an admin, prevent form update
-    $_SESSION['error'] = "You can't update the form.";
-    header("Location: " . BASE_URL . "students/view-request.php?id=" . $student_current_id);
+// // Check if user session exists
+if (!isset($_SESSION['user'])) {
+    $_SESSION['error'] = "User not logged in.";
+    header("Location: " . BASE_URL . "login.php");
     exit;
 }
 
+$user = $_SESSION['user'];
+$student_current_id = intval($user['student_id']);
+
+// // Fetch student data using current session student_id
+$query = "SELECT * FROM students WHERE id = $student_current_id";
+$result = $conn->query($query);
+
+if (!$result || $result->num_rows === 0) {
+    $_SESSION['error'] = "Student not found.";
+    header("Location: " . BASE_URL . "dashboard.php");
+    exit;
+}
+
+$row = $result->fetch_assoc();
+$img_id = $row['document_id'];
+
+$user_status = true;
+if ($row['student_status'] == NULL) {
+    $_SESSION['error'] = "No Form Submitted";
+    $user_status = false;
+}
+
+if (isset($_FILES['photo'], $_FILES['id_proof'], $_FILES['admission_receipt'], $_POST['update_student'])) {
+
+    // echo "<pre>";
+    // print_r($_FILES);
+    // print_r($_POST);
+    // exit;
+
+    // // Validate file uploads
+    // if ($_FILES['photo']['error'] !== UPLOAD_ERR_OK || $_FILES['id_proof']['error'] !== UPLOAD_ERR_OK || $_FILES['admission_receipt']['error'] !== UPLOAD_ERR_OK) {
+    //     $_SESSION['error'] = "Error uploading files.";
+    //     header("Location: " . BASE_URL . "dashboard.php");
+    //     exit;
+    // }
+
+    // Call the update function
+    $res = update_Student_by_user($conn, $_POST, $_FILES, $student_current_id, $user['email']);
+
+    if (isset($res['success']) && $res['success'] === true) {
+        $_SESSION['success'] = "Your Record has been Successfully Updated";
+        header("Location: " . BASE_URL . "users/view-application.php");
+        exit;
+    } else {
+        $_SESSION['error'] = $res['error'];
+        header("Location: " . BASE_URL . "dashboard.php");
+        exit;
+    }
+}
+
+$result_approved = getStudent_approve($conn, $student_current_id);
+
+// // Check if the student is approved and not an admin
+if (isset($result_approved) && $result_approved) {
+    // Student is approved and not an admin, prevent form update
+    $_SESSION['error'] = "You can't update the form.";
+}
 
 ?>
+
+
 
 <?php
 include_once(DIR_URL . "include/header.php");
@@ -83,10 +85,13 @@ include_once(DIR_URL . "include/sidebar.php");
 <!--Main content start-->
 <main class="mt-5 pt-3">
     <div class="container-fluid">
-            <!--Cards-->
+        <!--Cards-->
+        <?php if (isset($user_status) && !$user_status) { ?>
+            <?php include_once(DIR_URL . "include/alerts.php"); ?>
+        <?php } else { ?>
+            <?php include_once(DIR_URL . "include/alerts.php"); ?>
             <div class="row">
                 <div class="col-md-12">
-                    <?php include_once(DIR_URL . "include/alerts.php"); ?>
                     <h4 class="fw-bold text-uppercase">Details of Student</h4>
                 </div>
 
@@ -96,7 +101,7 @@ include_once(DIR_URL . "include/sidebar.php");
                             Basic Details
                         </div>
                         <div class="card-body">
-                            <form method="post" action="<?php echo BASE_URL ?>students/view-request.php?id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+                            <form method="post" action="<?php echo BASE_URL ?>users/view-application.php" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
@@ -164,7 +169,9 @@ include_once(DIR_URL . "include/sidebar.php");
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input type="email" name="email" class="form-control" value="<?php echo $row['email'] ?>" />
+                                            <?php $disabled = "disabled"; ?>
+                                                <input type="email" name="email" class="form-control" value="<?php echo $user['email'] ?>" <?php echo $disabled ?> />
+                                            <?php  ?>
                                         </div>
                                     </div>
 
@@ -388,76 +395,9 @@ include_once(DIR_URL . "include/sidebar.php");
                                             <?php
                                             ?>
 
-                                            <?php if (isset($isAdmin) && $isAdmin && !$result_approved) { ?>
-                                                <!-- if admin then show it  -->
-                                                <!-- Button trigger modal -->
-                                                <?php
-                                                // echo $isAdmin;
-                                                // echo $result_approved;
-                                                // exit;
-                                                ?>
-
-                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Approve_Modal">
-                                                    Approve
-                                                </button>
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="Approve_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5 text-success fw-bold text-uppercase" id="Reject_Modal_Label">Are You sure?</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h2 class="text-secondary fw-bold">
-                                                                    Do you want to Confirm? Then Click On <strong>Approve</strong>
-                                                                </h2>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=approved" class="btn btn-outline-success">
-                                                                    Approve
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <button type="reset" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Reject_Modal">
-                                                    Reject
-                                                </button>
-
-
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="Reject_Modal" tabindex="-1" aria-labelledby="Reject_Modal_Label" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5 text-danger fw-bold text-uppercase" id="Reject_Modal_Label">Reason for Rejection</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body w-100">
-                                                                <form action="">
-                                                                    <textarea class="form-control" style="resize: none;" id="rejectionReason" rows="5"></textarea>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                        <a href="<?php echo BASE_URL ?>students/change-Status.php?id=<?php echo $id ?>&type=reject" class="btn btn-outline-danger">
-                                                                            Reject
-                                                                        </a>
-                                                                    </div>
-                                                                </form>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            <?php } else if ((isset($isAdmin)  && !$isAdmin && !$result_approved)  || (isset($isAdmin) && $isAdmin && $result_approved)) { ?>
-
-                                                <!-- From Student side not approved or Admin Side can change it -->
-
+                                            <?php
+                                            if ((!$result_approved)) { ?>
+                                                <!-- From Student side not approved -->
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editStudent_Modal">
                                                     Update
@@ -491,6 +431,8 @@ include_once(DIR_URL . "include/sidebar.php");
                                                     Cancel
                                                 </a>
 
+                                            <?php } else { ?>
+
                                             <?php } ?>
 
 
@@ -502,6 +444,7 @@ include_once(DIR_URL . "include/sidebar.php");
                     </div>
                 </div>
             </div>
+        <?php }  ?>
     </div>
 </main>
 <!--Main content end-->

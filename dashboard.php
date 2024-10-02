@@ -172,7 +172,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
     <?php } else { ?>
 
         <div class="container-fluid">
-
+            <?php include_once(DIR_URL . "include/alerts.php"); ?>
             <div class="row">
                 <div class="col-md-12 my-3">
                     <h4 class="fw-bold text-uppercase">Dashboard</h4>
@@ -240,7 +240,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
 
             <div class="row p-2 mt-5">
                 <div class="col-md-12 my-2">
-                    <h2 class="text-dark fw-bolder">Welcome! <span class="text-primary fw-bold">Supriyo Dhara</span></h2>
+                    <h2 class="text-dark fw-bolder">Welcome! <span class="text-primary fw-bold"><?php echo $_SESSION['user']['email'] ?></span></h2>
                 </div>
             </div>
 
@@ -250,7 +250,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
                         <div class="card-body text-center">
                             <i class="fa-solid fa-plus fa-3x"></i>
                         </div>
-                        <a href="#" class="btn btn-secondary fw-bolder">Apply For Hostel</a>
+                        <a href="<?php echo BASE_URL ?>users/edit-student.php" class="btn btn-secondary fw-bolder">Apply For Hostel</a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -258,7 +258,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
                         <div class="card-body text-center">
                             <i class="fa-solid fa-book-open-reader fa-3x"></i>
                         </div>
-                        <a href="#" class="btn btn-secondary fw-bolder">View Applicaton Form</a>
+                        <a href="<?php echo BASE_URL ?>users/view-application.php" class="btn btn-secondary fw-bolder">View Applicaton Form</a>
                     </div>
                 </div>
                 <div class="col-md-3">

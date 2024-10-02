@@ -16,7 +16,7 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
     print_r($_POST);
     print_r($_FILES);
     exit;
-    $res = create_Student_by_admin_or_user($conn, $_POST, $_FILES);
+    $res = create_Student_by_admin($conn, $_POST, $_FILES);
 
     if (isset($res['success']) && $res['success'] == true) {
         $_SESSION['success'] = "Student recocrd has been created successfully";
@@ -34,7 +34,7 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
     // print_r($_POST);
     // print_r($_FILES);
     // exit;
-    $res = update_Student_by_admin_or_user($conn, $_POST, $_FILES, $user['student_id'], $user['email']);
+    $res = update_Student_by_admin($conn, $_POST, $_FILES, $user['student_id'], $user['email']);
 
     if (isset($res['success']) && $res['success'] == true) {
         $_SESSION['success'] = "Student recocrd has been Updated successfully";
@@ -46,10 +46,6 @@ if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admi
         exit;
     }
 }
-
-// echo "<pre>";
-// print_r($user);
-// exit;
 
 ?>
 
@@ -65,11 +61,7 @@ include_once(DIR_URL . "include/sidebar.php");
         <div class="row">
             <div class="col-md-12">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
-                <?php if ($isAdmin) { ?>
-                    <h4 class="fw-bold text-uppercase">Add New Student</h4>
-                <?php } else { ?>
-                    <h4 class="fw-bold text-uppercase">Fill the application form</h4>
-                <?php } ?>
+                <h4 class="fw-bold text-uppercase">Add New Student</h4>
             </div>
 
             <div class="col-md-12">
