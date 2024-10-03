@@ -283,7 +283,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
                         <div class="card-body text-center">
                             <i class="fa-solid fa-bars fa-3x"></i>
                         </div>
-                        <a href="#" class="btn btn-secondary fw-bolder">My Plan</a>
+                        <a href="<?php echo BASE_URL?>users/myplan.php" class="btn btn-secondary fw-bolder">My Plan</a>
                     </div>
                 </div>
             </div>

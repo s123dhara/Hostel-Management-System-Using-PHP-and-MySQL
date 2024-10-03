@@ -308,10 +308,10 @@
                             <ul class="navbar-nav ps-3">
                     
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i>Active Plans</a>
+                                    <a href="<?php echo BASE_URL ?>users/choose-plan.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Active Plans</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i>My Plan</a>
+                                    <a href="<?php echo BASE_URL ?>users/myplan.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>My Plan</a>
                                 </li>
                             </ul>
                         </div>
