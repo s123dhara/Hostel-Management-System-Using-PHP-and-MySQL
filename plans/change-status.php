@@ -1,60 +1,13 @@
 <?php include_once("../config/config.php");
 include_once("../config/database.php");
 
-include_once(DIR_URL . "include/middleware.php");
+include_once(DIR_URL . "include/admin_middleware.php");
 include_once(DIR_URL . "models/plan.php");
 include_once(DIR_URL . "models/room.php");
 
 
 
 #update status & rooms
-// if (isset($_GET['action']) && isset($_GET['id']) &&  $_GET['action'] = 'status' && $_GET['status'] == 'Inactive') {
-//     // echo "<pre>";
-//     // print_r($_GET);
-//     // exit;
-     
-//     $ID = $_GET['id'];
-//     $sql = "UPDATE plans SET status = 'Inactive' WHERE id = $ID";
-//     $res = $conn->query($sql);
-
-//     // $res = setStatus($conn, $_GET['id'], $_GET['status']);
-//     // if(isset($res['success'])) {
-//     //     $_SESSION['success'] = $res['success'];
-//     // }else{
-//     //     $_SESSION['error'] = $res['error'];
-//     // }
-    
-//     // else {
-//     //     $_SESSION['error'] = "Something went wrong";
-//     // }
-//     header("LOCATION: " . BASE_URL . "plans");
-//     exit;
-// }
-
-// if (isset($_GET['action']) && isset($_GET['id']) &&  $_GET['action'] = 'status' && $_GET['status'] == 'Active') {
-//     // echo "<pre>";
-//     // print_r($_GET);
-//     // exit;
-     
-//     $ID = $_GET['id'];
-//     $sql = "UPDATE plans SET status = 'Inactive' WHERE id = $ID";
-//     $res = $conn->query($sql);
-
-//     // $res = setStatus($conn, $_GET['id'], $_GET['status']);
-//     // if(isset($res['success'])) {
-//     //     $_SESSION['success'] = $res['success'];
-//     // }else{
-//     //     $_SESSION['error'] = $res['error'];
-//     // }
-    
-//     // else {
-//     //     $_SESSION['error'] = "Something went wrong";
-//     // }
-//     header("LOCATION: " . BASE_URL . "plans");
-//     exit;
-// }
-
-
 if (isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'status') {
     $ID = intval($_GET['id']);  // Sanitize input
 

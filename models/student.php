@@ -209,7 +209,7 @@ function handle_file_upload($file, $allowed_formats, $name)
 
     // Size limits (0 KB to 100 KB)
     $minSize = 0;  // 0 KB in bytes
-    $maxSize = 102400; // 100 KB in bytes
+    $maxSize = 802400; // 100 KB in bytes
 
     if ($file['size'] < $minSize || $file['size'] > $maxSize) {
         return ['error' => "$name: File size must be between 51 KB and 100 KB."];

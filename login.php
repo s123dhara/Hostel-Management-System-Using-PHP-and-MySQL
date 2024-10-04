@@ -9,13 +9,30 @@ if(isset($_SESSION['is_user_login'])) {
 }
 
 
+
 // Login Functionality (pizza123)
 if (isset($_POST['submit'])) {
+
+    // echo "<pre>";
+    // print_r($_POST);
+    // exit;
+
     $res = login($conn, $_POST);
     if ($res['status'] == true) {
-        $_SESSION['is_user_login'] = true;
-        $_SESSION['user'] = $res['user'];
-        header("LOCATION: " . BASE_URL . 'dashboard.php');
+        // print_r($res['user']);
+        // // exit;
+        if($res['user']['isAdmin'] == 0) {
+            $_SESSION['is_user_login'] = true;
+            $_SESSION['user'] = $res['user'];
+            header("LOCATION: " . BASE_URL . 'dashboard.php');
+        }else if($res['user']['isAdmin'] == 1) {
+            //admin for
+            $_SESSION['is_admin_login'] = true;
+            $_SESSION['user'] = $res['user'];
+            header("LOCATION: " . BASE_URL . 'dashboard.php');
+
+        }
+
         exit;
     } else {
         $_SESSION['error'] = "Invalid login information";

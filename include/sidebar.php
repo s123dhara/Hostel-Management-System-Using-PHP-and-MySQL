@@ -93,7 +93,7 @@
                             <ul class="navbar-nav ps-3">
                     
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
+                                    <a href="<?php echo BASE_URL ?>complains/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
                                 </li>
                             </ul>
                         </div>
@@ -122,10 +122,10 @@
                             <ul class="navbar-nav ps-3">
                     
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i>Add New Notice</a>
+                                    <a href="<?php echo BASE_URL ?>notices/add-notice.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Add New Notice</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
+                                    <a href="<?php echo BASE_URL ?>notices/" class="nav-link"><i class="fa-solid fa-list me-2"></i> Manage All</a>
                                 </li>
                             </ul>
                         </div>
@@ -225,7 +225,8 @@
                             <ul class="navbar-nav ps-3">
                     
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i>Raise An Issue</a>
+                                    <a href="<?php echo BASE_URL ?>users/add-complain.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Raise An Issue</a>
+                                    <a href="<?php echo BASE_URL ?>users/view-complain.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>View Complaints</a>
                                 </li>
                             </ul>
                         </div>
@@ -245,7 +246,7 @@
                             <ul class="navbar-nav ps-3">
                     
                                 <li>
-                                    <a href="<?php echo BASE_URL ?>books/" class="nav-link"><i class="fa-solid fa-list me-2"></i>Check Notice</a>
+                                    <a href="<?php echo BASE_URL ?>users/check-notice.php" class="nav-link"><i class="fa-solid fa-list me-2"></i>Check Notice</a>
                                 </li>
                                 
                             </ul>

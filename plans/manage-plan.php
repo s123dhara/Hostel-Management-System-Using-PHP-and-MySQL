@@ -1,18 +1,29 @@
 <?php include_once("../config/config.php");
 include_once("../config/database.php");
 
-include_once(DIR_URL . "include/middleware.php");
+include_once(DIR_URL . "include/admin_middleware.php");
 include_once(DIR_URL . "models/plan.php");
 ?>
 
 <?php
-if(isset($_GET) && isset($_GET['id'])) {
-    $plan = getPlanById($conn, $_GET['id']);
-    // Check if the array is empty
-    if (empty($plan)) {
-        $_SESSION['error'] = "Error: No Plans found or there was a problem fetching the room data.";
+if (isset($_GET) && isset($_GET['id'])) {
+    $isPlanActive = false;
+    $plans = findPlanIdAndDate($conn, $_GET['id']);
+    if (isset($plans) && $plans == NULL) {
+        $_SESSION['error'] = "No Active Plans";
+    } else if($plans != NULL) {
+
+        $isPlanActive = true;
+        $plan = getPlanById($conn, $plans['plan_id']);
+        if (empty($plan)) {
+            $_SESSION['error'] = "Error: No Plans found or there was a problem fetching the room data.";
+        }
     }
 }
+
+
+
+
 ?>
 
 
@@ -32,7 +43,7 @@ include_once(DIR_URL . "include/sidebar.php");
         <div class="row p-4">
             <div class="col-md-12 d-flex justify-content-center align-items-center">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
-                <h4 class="fw-bold text-uppercase">Checkout | Buy Plan</h4>
+                <h4 class="fw-bold text-uppercase">Upgrade Plan | Admin</h4>
             </div>
 
             <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
@@ -47,28 +58,40 @@ include_once(DIR_URL . "include/sidebar.php");
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" name="phone_number"  class="form-control">
+                        <input type="text" name="phone_number" class="form-control">
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">Plan Name</label>
-                        <input type="text" name="title" class="form-control" value="<?php echo $plan['title'] ?>" <?php echo "disabled" ?> >
+                        <?php if ($isPlanActive) { ?>
+                            <input type="text" name="title" class="form-control" value="<?php echo $plan['title'] ?>">
+                        <?php } else { ?>
+                            <input type="text" name="title" class="form-control">
+                        <?php } ?>
                     </div>
-                    
+
                     <div class="col-md-4">
                         <label class="form-label">Amount <i class="fa-solid fa-indian-rupee-sign"></i></label>
-                        <input type="text" name="price" class="form-control" value="<?php echo  $plan['price'] ?>" <?php echo "disabled" ?> >
+                        <?php if ($isPlanActive) { ?>
+                        <input type="text" name="price" class="form-control" value="<?php echo  $plan['price'] ?>">
+                        <?php } else { ?>
+                            <input type="text" name="price" class="form-control">
+                        <?php } ?>
                     </div>
 
                     <div class="col-md-4">
-                        <label  class="form-label">Duration (Months)</label>
-                        <input type="text" name="duration" class="form-control" value="<?php echo $plan['duration'] ?>" <?php echo "disabled" ?>>
+                        <label class="form-label">Duration (Months)</label>
+                        <?php if ($isPlanActive) { ?>
+                        <input type="text" name="duration" class="form-control" value="<?php echo $plan['duration'] ?>" >
+                        <?php } else { ?>
+                            <input type="text" name="duration" class="form-control">
+                        <?php } ?>
                     </div>
 
-                    
-                    
+
+
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Checkout</button>
+                        <button type="submit" class="btn btn-primary">Upgrade</button>
                         <button type="reset" class="btn btn-secondary">Cancel</button>
                     </div>
                 </form>

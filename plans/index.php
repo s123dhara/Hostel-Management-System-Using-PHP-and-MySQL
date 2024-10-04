@@ -1,7 +1,7 @@
 <?php include_once("../config/config.php");
 include_once("../config/database.php");
 
-include_once(DIR_URL . "include/middleware.php");
+include_once(DIR_URL . "include/admin_middleware.php");
 include_once(DIR_URL . "models/plan.php");
 include_once(DIR_URL . "models/room.php");
 

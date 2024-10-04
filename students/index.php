@@ -1,7 +1,7 @@
 <?php include_once("../config/config.php");
 include_once("../config/database.php");
 
-include_once(DIR_URL . "include/middleware.php");
+include_once(DIR_URL . "include/admin_middleware.php");
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/student.php");
@@ -71,7 +71,7 @@ include_once(DIR_URL . "include/sidebar.php");
         <div class="row dashboard-counts">
             <div class="col-md-12">
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
-                <h4 class="fw-bold text-uppercase">Manage Rooms
+                <h4 class="fw-bold text-uppercase">Manage Students
                     <a href="<?php echo BASE_URL ?>students/pending-request.php" target="_blank" class="btn btn-warning position-relative float-end mb-2">
                         Pending Request
                         <?php
@@ -87,7 +87,7 @@ include_once(DIR_URL . "include/sidebar.php");
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        All Books
+                        All Students
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -154,7 +154,7 @@ include_once(DIR_URL . "include/sidebar.php");
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+                                                        <a href="<?php echo BASE_URL ?>plans/manage-plan.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-dark btn-sm">Manage</a>
                                                     </td>
                                                 </tr>
 

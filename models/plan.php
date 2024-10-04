@@ -181,43 +181,30 @@ function createBooking_by_admin($conn, $postData, $getData)
 
 
 function getPlanStatus($conn, $plan_id) {
-    // Query to get the check_in_date and check_out_date for the plan
     $sql = "SELECT check_in_date, check_out_date FROM bookings WHERE plan_id = ?";
-    
-    // Prepare the statement
     $stmt = $conn->prepare($sql);
-    
+
     if ($stmt === false) {
         return array('error' => "Error preparing statement: " . $conn->error);
     }
-    
-    // Bind the plan ID
+
     $stmt->bind_param('i', $plan_id);
-    
-    // Execute the statement
     $stmt->execute();
-    
-    // Get the result
     $result = $stmt->get_result();
-    
-    // Check if the plan exists
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        
-        // Extract check-in and check-out dates
         $checkInDate = new DateTime($row['check_in_date']);
         $checkOutDate = new DateTime($row['check_out_date']);
-        // $currentDate = new DateTime(); // Get the current date --->SET IT 
+        $currentDate = new DateTime();  // Get the current date
 
-        $currentDate = new DateTime("2024-10-15"); // Get the current date
-        
-        // Determine the status
+        // Determine the status based on dates
         if ($currentDate >= $checkInDate && $currentDate <= $checkOutDate) {
-            return 'Active'; // Current date is between check-in and check-out
+            return 'Active';  // Plan is currently active
         } elseif ($currentDate > $checkOutDate) {
-            return 'Expired'; // Current date is after check-out
+            return 'Expired'; // Plan has expired
         } elseif ($currentDate < $checkInDate) {
-            return 'Advance'; // Current date is before check-in
+            return 'Advance'; // Plan is scheduled for the future
         }
     } else {
         return array('error' => "Plan not found.");
@@ -225,38 +212,30 @@ function getPlanStatus($conn, $plan_id) {
 }
 
 
+
 function findPlanIdAndDate($conn, $student_id) {
-    // Get current date
-    // $currentDate = date('Y-m-d');
-    $currentDate = date('Y-m-d', strtotime("2024-10-15"));
+    $currentDate = date('Y-m-d');
     
-    // SQL query to find the active plan for the student
+    // Query to find active plans
     $SQL = "SELECT plan_id, check_in_date, check_out_date 
             FROM bookings 
             WHERE student_id = ? 
             AND check_in_date <= ? 
-            AND check_out_date >= ?";
+            AND check_out_date >= ? 
+            LIMIT 1";
 
-    // Prepare the statement
     $stmt = $conn->prepare($SQL);
-    
+
     if ($stmt === false) {
         return array('error' => "Error preparing statement: " . $conn->error);
     }
-    
-    // Bind the parameters (student_id, currentDate, currentDate)
+
     $stmt->bind_param('iss', $student_id, $currentDate, $currentDate);
-    
-    // Execute the statement
     $stmt->execute();
-    
-    // Get the result
     $result = $stmt->get_result();
-    
-    // Check if an active plan is found
+
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return $row; // Return the active plan ID
+        return $result->fetch_assoc(); // Return the active plan
     } else {
         return null; // No active plan found
     }

@@ -1,6 +1,10 @@
 <?php include_once("config/config.php");
 include_once("config/database.php");
-include_once(DIR_URL . "include/middleware.php");
+if($_SESSION['user']['isAdmin']) {
+    include_once(DIR_URL . "include/admin_middleware.php");  
+}else {
+    include_once(DIR_URL . "include/middleware.php");
+}
 
 ?>
 <?php
@@ -30,6 +34,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
     <?php if ($isAdmin) { ?>
 
         <div class="container-fluid">
+            <?php include_once(DIR_URL . "include/alerts.php"); ?>
             <div class="row">
                 <div class="col-md-12 my-3">
                     <h4 class="fw-bold text-uppercase">Dashboard</h4>
@@ -283,7 +288,7 @@ $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
                         <div class="card-body text-center">
                             <i class="fa-solid fa-bars fa-3x"></i>
                         </div>
-                        <a href="<?php echo BASE_URL?>users/myplan.php" class="btn btn-secondary fw-bolder">My Plan</a>
+                        <a href="<?php echo BASE_URL ?>users/myplan.php" class="btn btn-secondary fw-bolder">My Plan</a>
                     </div>
                 </div>
             </div>

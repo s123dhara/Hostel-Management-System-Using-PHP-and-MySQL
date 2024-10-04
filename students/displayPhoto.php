@@ -1,6 +1,7 @@
 <?php
 include_once("../config/config.php");
 include_once("../config/database.php");
+include_once(DIR_URL . "include/admin_middleware.php");
 
 // Check if an ID and type (photo or id_proof) are passed
 if (isset($_GET['id']) && isset($_GET['type'])) {
