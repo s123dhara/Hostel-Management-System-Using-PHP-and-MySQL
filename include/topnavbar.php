@@ -29,12 +29,13 @@
                         <?php if(isset($_SESSION['user']['isAdmin']) && $_SESSION['user']['isAdmin']) { ?>
                             Hi Admin
                         <?php } else { ?>
-                            <?php echo $_SESSION['user']['email'] ?>
+
+                            <?php echo $_SESSION['user']['username'] ?>
                         <?php }?>
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="">My Profle</a></li>
+                        <li><a class="dropdown-item" href="<?php echo BASE_URL ?>users">My Profle</a></li>
                         <li><a class="dropdown-item" href="">Change Password</a></li>
                         <li>
                             <hr class="dropdown-divider" />

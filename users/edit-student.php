@@ -6,6 +6,8 @@ include_once(DIR_URL . "include/middleware.php");
 include_once(DIR_URL . "models/hostel.php");
 include_once(DIR_URL . "models/room.php");
 include_once(DIR_URL . "models/user.php");
+include_once(DIR_URL . "models/student.php");
+
 
 //check VIEW-APPLICATION-PAGE for USER visibility
 $user = $_SESSION['user'];

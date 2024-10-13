@@ -3,9 +3,26 @@ include_once("../config/database.php");
 
 include_once(DIR_URL . "include/middleware.php");
 include_once(DIR_URL . "models/plan.php");
+include_once(DIR_URL . "models/payment.php");
 ?>
 
 <?php
+$user = $_SESSION['user'];
+$student_id = $user['student_id'];
+
+
+if(isset($_POST) && isset($_POST['make_payment']) && isset($_GET['id'])) {
+    $res = updatePayment($conn, $student_id, $_POST, $_GET['id']);
+    if(isset($res['success']) ) {
+        $_SESSION['success'] = $res['success'];
+        header("Location:" . BASE_URL . "payments/payment-success.php");
+        exit;
+    }else {
+        $_SESSION['error'] = $res['error'];
+    }
+}
+
+
 if(isset($_GET) && isset($_GET['id'])) {
     $plan = getPlanById($conn, $_GET['id']);
     // Check if the array is empty
@@ -13,6 +30,10 @@ if(isset($_GET) && isset($_GET['id'])) {
         $_SESSION['error'] = "Error: No Plans found or there was a problem fetching the room data.";
     }
 }
+
+
+
+
 ?>
 
 
@@ -36,7 +57,7 @@ include_once(DIR_URL . "include/sidebar.php");
             </div>
 
             <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
-                <form class="row g-3 shadow p-4">
+                <form class="row g-3 shadow p-4" action="<?php echo BASE_URL?>payments/payment.php?id=<?php echo $_GET['id'] ?>" method="post">
                     <div class="col-md-8">
                         <label class="form-label">Name</label>
                         <input type="text" name="name" class="form-control" value="">
@@ -68,7 +89,7 @@ include_once(DIR_URL . "include/sidebar.php");
                     
                     
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Checkout</button>
+                        <button type="submit" name="make_payment" class="btn btn-primary">Checkout</button>
                         <button type="reset" class="btn btn-secondary">Cancel</button>
                     </div>
                 </form>

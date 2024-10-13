@@ -44,7 +44,7 @@ if (is_null($bookings)) {
             $bookings = $result->fetch_assoc();
         } else {
             $_SESSION['error'] = "No Active or Past Plans!";
-            header('Location: /error_page.php'); // Redirect or handle error
+            header('Location:' . BASE_URL . "error"); // Redirect or handle error
             exit;
         }
     }

@@ -10,7 +10,7 @@ function createStudent($conn, $params)
     $datetime = date("Y-m-d H:i:s");
 
     // Prepare the SQL insert query for the `students` table
-    $sql = "INSERT INTO students (first_name, last_name, email, created_at) 
+    $sql = "INSERT INTO students (first_name, last_name ,email, created_at) 
             VALUES (?, ?, ?, ?)";
 
     // Prepare the statement
@@ -26,9 +26,9 @@ function createStudent($conn, $params)
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert into the `users` table
-        $sql = "INSERT INTO users (student_id, email, password, created_at) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO users (student_id, username ,email, password, created_at) VALUES (?, ?, ? ,?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $student_id, $email, $hashed_password, $datetime);
+        $stmt->bind_param("issss", $student_id, $username ,$email, $hashed_password, $datetime);
 
         // Execute the second insert and check if successful
         if ($stmt->execute()) {
@@ -561,4 +561,12 @@ function deleteStudent($conn, $student_id)
             return array('error' => "Error " . $conn->error);
         }
     }
+}
+
+
+function getStudentById($conn, $id) {
+    $sql = "SELECT * FROM students WHERE id = $id";
+    $res = $conn->query($sql);
+    return $res;
+
 }

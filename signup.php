@@ -73,6 +73,11 @@ if (isset($_POST['submit'])) {
                                         </div>
 
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" name="username" required />
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label">Email address</label>
                                         <input type="email" class="form-control" name="email" required />

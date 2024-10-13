@@ -16,9 +16,6 @@ function getUserByEmail($conn, $email)
     return $res;
 }
 
-
-
-
 function create_Student_by_user($conn, $params, $files, $student_id, $email)
 {
 
@@ -395,5 +392,7 @@ function update_Student_by_user($conn, $params, $files, $student_id, $email)
 
     return $result;
 }
+
+
 
 

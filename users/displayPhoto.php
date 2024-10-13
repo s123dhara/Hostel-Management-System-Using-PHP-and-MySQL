@@ -2,8 +2,6 @@
 include_once("../config/config.php");
 include_once("../config/database.php");
 
-
-
 // Check if an ID and type (photo or id_proof) are passed
 if (isset($_GET['id']) && isset($_GET['type'])) {
     $image_id = intval($_GET['id']);
@@ -49,4 +47,5 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
 } else {
     echo "Image ID or type not provided.";
 }
+
 ?>
