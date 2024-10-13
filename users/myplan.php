@@ -20,7 +20,7 @@ $bookings = findPlanIdAndDate($conn, $student_id);
 if (is_null($bookings)) {
     // If no current plan, check for future plans
     $currentDate = date("Y-m-d");
-    
+
     // Query to find future plans
     $SQL = "SELECT * FROM bookings WHERE student_id = ? AND check_in_date >= ? ORDER BY check_in_date DESC LIMIT 1";
     // echo "SQL : " . $SQL;
@@ -75,7 +75,7 @@ include_once(DIR_URL . "include/sidebar.php");
 
 
 <!-- Main Content -->
-<main class="mt-5 pt-3">
+<main class="mt-5 pt-4">
     <div class="container-fluid">
         <!--Cards-->
         <div class="row p-4">
@@ -83,46 +83,90 @@ include_once(DIR_URL . "include/sidebar.php");
                 <?php include_once(DIR_URL . "include/alerts.php"); ?>
                 <h4 class="fw-bold text-uppercase">My Plan</h4>
             </div>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
+                    <div class="card shadow-lg" style="width: 50%;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item list-group-item-primary">
+                                <span class="fw-bolder">Plan Name:</span>
+                                <span class="fw-bold"><?php echo $plan['title'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Duration:</span>
+                                <span class="fw-bold"><?php echo $plan['duration'] . " Months"; ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Price:</span>
+                                <span class="fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i><?php echo $plan['price'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Status:</span>
+                                <?php if ($status == 'Active') { ?>
+                                    <span class="fw-bold badge text-bg-success"><?php echo $status ?></span>
+                                <?php } else if ($status == 'Expired') { ?>
+                                    <span class="fw-bold badge text-bg-danger"><?php echo $status ?></span>
+                                <?php } else { ?>
+                                    <span class="fw-bold badge text-bg-warning"><?php echo $status ?></span>
+                                <?php } ?>
 
-            <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
-                <div class="card shadow-lg" style="width: 50%;">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item list-group-item-primary">
-                            <span class="fw-bolder">Plan Name:</span>
-                            <span class="fw-bold"><?php echo $plan['title'] ?></span>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="fw-bolder">Duration:</span>
-                            <span class="fw-bold"><?php echo $plan['duration'] . " Months"; ?></span>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="fw-bolder">Price:</span>
-                            <span class="fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i><?php echo $plan['price'] ?></span>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="fw-bolder">Status:</span>
-                            <?php if ($status == 'Active') { ?>
-                                <span class="fw-bold badge text-bg-success"><?php echo $status ?></span>
-                            <?php } else if ($status == 'Expired') { ?>
-                                <span class="fw-bold badge text-bg-danger"><?php echo $status ?></span>
-                            <?php } else { ?>
-                                <span class="fw-bold badge text-bg-warning"><?php echo $status ?></span>
-                            <?php } ?>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Start Date:</span>
+                                <span class="fw-bold"><?php echo $bookings['check_in_date'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Expire Date:</span>
+                                <span class="fw-bold"><?php echo $bookings['check_out_date'] ?></span>
+                            </li>
 
-                        </li>
-                        <li class="list-group-item">
-                            <span class="fw-bolder">Start Date:</span>
-                            <span class="fw-bold"><?php echo $bookings['check_in_date'] ?></span>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="fw-bolder">Expire Date:</span>
-                            <span class="fw-bold"><?php echo $bookings['check_out_date'] ?></span>
-                        </li>
+                            <li class="list-group-item">
+                                <a href="./choose-plan.php" class="btn btn-primary btn-sm float-end">Upgrade</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
+                    <div class="card shadow-lg" style="width: 50%;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item list-group-item-primary">
+                                <span class="fw-bolder">Plan Name:</span>
+                                <span class="fw-bold"><?php echo $plan['title'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Duration:</span>
+                                <span class="fw-bold"><?php echo $plan['duration'] . " Months"; ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Price:</span>
+                                <span class="fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i><?php echo $plan['price'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Status:</span>
+                                <?php if ($status == 'Active') { ?>
+                                    <span class="fw-bold badge text-bg-success"><?php echo $status ?></span>
+                                <?php } else if ($status == 'Expired') { ?>
+                                    <span class="fw-bold badge text-bg-danger"><?php echo $status ?></span>
+                                <?php } else { ?>
+                                    <span class="fw-bold badge text-bg-warning"><?php echo $status ?></span>
+                                <?php } ?>
 
-                        <li class="list-group-item">
-                            <a href="./choose-plan.php" class="btn btn-primary btn-sm float-end">Upgrade</a>
-                        </li>
-                    </ul>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Start Date:</span>
+                                <span class="fw-bold"><?php echo $bookings['check_in_date'] ?></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="fw-bolder">Expire Date:</span>
+                                <span class="fw-bold"><?php echo $bookings['check_out_date'] ?></span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="./choose-plan.php" class="btn btn-primary btn-sm float-end">Upgrade</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

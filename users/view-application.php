@@ -83,7 +83,7 @@ include_once(DIR_URL . "include/topnavbar.php");
 include_once(DIR_URL . "include/sidebar.php");
 ?>
 <!--Main content start-->
-<main class="mt-5 pt-3">
+<main class="mt-5 pt-4">
     <div class="container-fluid">
         <!--Cards-->
         <?php if (isset($user_status) && !$user_status) { ?>

@@ -15,7 +15,7 @@ $email = $user['email'];
 
 $user_by_email = getUserByEmail($conn, $email);
 $user_status = true;
-if (isset($user_by_email) && $user_by_email['student_status'] != NULL) {
+if (isset($user_by_email) && $user_by_email['student_status'] == 'Approved') {
     $_SESSION['error'] = "Already Form Submitted!";
     $user_status = false;
 }
@@ -54,7 +54,7 @@ include_once(DIR_URL . "include/topnavbar.php");
 include_once(DIR_URL . "include/sidebar.php");
 ?>
 <!--Main content start-->
-<main class="mt-5 pt-3">
+<main class="mt-5 pt-4">
     <div class="container-fluid">
 
         <?php if (isset($user_status) && !$user_status) { ?>

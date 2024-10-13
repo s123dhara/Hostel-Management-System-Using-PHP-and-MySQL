@@ -32,7 +32,7 @@ include_once(DIR_URL . "include/sidebar.php");
 
 
 <!-- Main Content -->
-<main class="mt-5 pt-3">
+<main class="mt-5 pt-4">
     <div class="container-fluid">
         <!--Cards-->
         <div class="row dashboard-counts">

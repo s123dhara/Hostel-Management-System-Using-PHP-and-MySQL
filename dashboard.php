@@ -8,7 +8,6 @@ if($_SESSION['user']['isAdmin']) {
 
 ?>
 <?php
-
 include_once("./include/header.php");
 include_once("./include/topnavbar.php");
 include_once("./include/sidebar.php");
@@ -25,6 +24,7 @@ if ($pending_students && $pending_students->num_rows > 0) {
 }
 
 $isAdmin = ($_SESSION['user']['isAdmin'] == 1 ? true : false);
+
 
 
 ?>

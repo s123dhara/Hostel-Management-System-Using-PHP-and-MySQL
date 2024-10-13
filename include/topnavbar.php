@@ -25,21 +25,34 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo BASE_URL ?>assets/images/user.jpg" class="user-icon" />
-                        <?php if(isset($_SESSION['user']['isAdmin']) && $_SESSION['user']['isAdmin']) { ?>
+
+
+                        <?php if (isset($_SESSION['user']['isAdmin']) && $_SESSION['user']['isAdmin']) { ?>
                             Hi Admin
                         <?php } else { ?>
 
+                            <?php if ($_SESSION['user']['profile_pic'] == NULL) { ?>
+                                <!-- Display default user icon if no profile picture is set -->
+                                <img src="<?php echo BASE_URL ?>assets/images/default-user.png" alt="" class="user-icon">
+                            <?php } else { ?>
+                                <!-- Display user's profile picture if available -->
+                                <img src="<?php echo BASE_URL ?>users/displayPhoto.php?id=<?php echo $_SESSION['user']['id']; ?>&type=profile_pic" class="user-icon" />
+                            <?php } ?>
+
                             <?php echo $_SESSION['user']['username'] ?>
-                        <?php }?>
+                        <?php } ?>
                     </a>
 
+
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="<?php echo BASE_URL ?>users">My Profle</a></li>
-                        <li><a class="dropdown-item" href="">Change Password</a></li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
+                        <?php if (isset($_SESSION['user']['isAdmin']) && !$_SESSION['user']['isAdmin']) { ?>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL ?>users">My Profle</a></li>
+                            <li><a class="dropdown-item" href="">Change Password</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                        <?php } ?>
+
                         <li>
                             <a class="dropdown-item" href="<?php echo BASE_URL ?>logout.php">Logout</a>
                         </li>

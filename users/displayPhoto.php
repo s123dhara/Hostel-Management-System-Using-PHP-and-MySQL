@@ -7,32 +7,29 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
     $image_id = intval($_GET['id']);
     $image_type = $_GET['type'];
 
-    // Fetch the correct image and its MIME type based on the 'type' parameter
-    if ($image_type == 'photo') {
-        $query = "SELECT photo, photo_type FROM documents WHERE id = ?";
-    } else if ($image_type == 'id_proof') {
-        $query = "SELECT id_proof, id_proof_type FROM documents WHERE id = ?";
-    }
-    else if ($image_type == 'admission_receipt') {
-        $query = "SELECT admission_receipt, admission_receipt_type FROM documents WHERE id = ?";
-    }
-    else {
-        echo "Invalid image type.";
-        exit;
+    // Define the query based on the image type
+    switch ($image_type) {
+        case 'photo':
+            $query = "SELECT photo, photo_type FROM documents WHERE id = ?";
+            break;
+        case 'id_proof':
+            $query = "SELECT id_proof, id_proof_type FROM documents WHERE id = ?";
+            break;
+        case 'admission_receipt':
+            $query = "SELECT admission_receipt, admission_receipt_type FROM documents WHERE id = ?";
+            break;
+        case 'profile_pic':
+            $query = "SELECT profile_pic, profile_pic_type FROM users WHERE id = ?";
+            break;
+        default:
+            echo "Invalid image type.";
+            exit;
     }
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $image_id);
     $stmt->execute();
-    
-    // Fetch both image data and its MIME type
-    if ($image_type == 'photo') {
-        $stmt->bind_result($image_data, $mime_type);
-    } else if ($image_type == 'id_proof') {
-        $stmt->bind_result($image_data, $mime_type);
-    }else if($image_type == 'admission_receipt') {
-        $stmt->bind_result($image_data, $mime_type);
-    }
+    $stmt->bind_result($image_data, $mime_type);
 
     if ($stmt->fetch()) {
         // Set the appropriate content type header based on the MIME type
@@ -47,5 +44,4 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
 } else {
     echo "Image ID or type not provided.";
 }
-
 ?>
