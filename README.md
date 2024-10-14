@@ -27,6 +27,19 @@ Database: MySQL for storing student, room, and payment information.
 - Login page of Admin / User
 - ![image](https://github.com/user-attachments/assets/e1e7091c-0c1b-4b36-a85c-e0906c9769bb)
 
+- Admin panel 
+![image](https://github.com/user-attachments/assets/9e678728-9227-4dc4-af98-3667a2d8f58b)
+
+- Room managment 
+![image](https://github.com/user-attachments/assets/39cfb7cc-7663-43e9-bc79-0576eb3008cf)
+
+- student Managment
+![image](https://github.com/user-attachments/assets/047d8aab-352b-4420-97f6-2a3eba268974)
+
+- Student Adding by Admin  with Images
+![image](https://github.com/user-attachments/assets/b905c144-861e-4690-a014-33f9a4b0c9ac)
+
+ ## and Etc check in github Link : https://github.com/s123dhara/Hostel-Management-System-Using-PHP-and-MySQL
 
 
 ## Feedback
