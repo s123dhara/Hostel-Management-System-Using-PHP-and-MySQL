@@ -48,6 +48,18 @@ Database: MySQL for storing student, room, and payment information.
 # Everything is Working in User Panel. For furthur checking check in Github.
 
 
+## Installation
+
+Install my-project with Xampp
+# First Install Xampp with Php Version 8.2
+
+```bash
+  Open Browser and write : localhost/hms
+```
+
+# For Database Connection
+```bash
+  I Have uploaded hms.sql file. First Download it and Import it in Phpmyadmin. 
 
 ## Feedback
 
