@@ -19,6 +19,16 @@ Backend: PHP with MySQL for database management.
 Frontend: Bootstrap for responsive design.
 
 Database: MySQL for storing student, room, and payment information.
+
+## Output 
+- Home page of Hostel
+![image](https://github.com/user-attachments/assets/4acb8d58-d9eb-47c3-9ab6-b970b161a970)
+
+- Login page of Admin / User
+- ![image](https://github.com/user-attachments/assets/e1e7091c-0c1b-4b36-a85c-e0906c9769bb)
+
+
+
 ## Feedback
 
 If you have any feedback, please reach out to us at spdh427@gmail.com
