@@ -11,7 +11,7 @@ if (isset($_POST['create_hostel'])) {
 
     if (isset($res['success'])) {
         $_SESSION['success'] = "Hostel has been created successfully";
-        header("Location: " . BASE_URL . "rooms/add_room.php");
+        header("Location: " . BASE_URL . "rooms/add-room.php");
         exit;
     } else {
         $_SESSION['error'] = $res['error'];

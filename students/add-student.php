@@ -12,10 +12,7 @@ $isAdmin = ($_SESSION['user']['isAdmin']);
 $user = $_SESSION['user'];
 
 if (isset($_FILES['photo']) && isset($_FILES['id_proof']) && isset($_FILES['admission_receipt'])  && isset($_POST['create_student'])) {
-    echo "<pre>";
-    print_r($_POST);
-    print_r($_FILES);
-    exit;
+   
     $res = create_Student_by_admin($conn, $_POST, $_FILES);
 
     if (isset($res['success']) && $res['success'] == true) {
