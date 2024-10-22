@@ -6,76 +6,48 @@ The system allows for efficient management of hostel-related activities such as 
 
 
 ## Key & Features
-Room Allocation Management:
+Student Management: Register students and maintain detailed records.
 
-- ## Create, view, and assign rooms to residents:
-  - Room availability tracking and status updates
-  - Configurable room categories (e.g., single, double, deluxe)
-  - Resident Information Management:
+Room Management: Allocate, manage, and track room availability and status.
 
- - ## Add and manage resident profiles with detailed information
-    - Track residency duration, room history, and associated payments
+Payment Tracking: Handle and monitor payments with transaction history.
 
-- ## Payment Tracking and Billing [## This is Under Development Section ]:
-  - Record payments and issue bills/invoices
-  - Real-time updates on payment statuses (paid/unpaid)
-  - Payment history for each resident
-
-- ## Announcements & Notices:
-  - Create and publish announcements or important notices
-  - Role-based access for hostel staff to manage announcements
-  - Maintenance Requests:
-
-- ## Residents can file maintenance requests via their dashboard
-   - Administrators can track and manage pending and resolved requests
-   - Authentication and Role-based Access Control (RBAC):
-
-- ## Secure login with user roles (admin, resident, staff)
-  - Access control for different functionalities based on roles
-  
-- ## Dashboard Analytics:
- - Visual representation of room occupancy rates
- - Payment summaries, pending requests, and other useful statistics
+Responsive Design: Fully responsive interface powered by Bootstrap for seamless use on any device.
 
 
-## Tech Stack
-- Tailwind CSS: Responsive and utility-first CSS framework to ensure a modern, mobile-friendly user interface.
-- Alpine.js: Minimal JavaScript framework for handling frontend interactivity without the need for large libraries.
-- Laravel: Robust PHP framework for backend development, featuring Eloquent ORM, routing, and secure user authentication.
-- Livewire: Dynamic, real-time updates to the user interface without leaving the simplicity of Laravel’s backend.
+## Technologies
+Backend: PHP with MySQL for database management.
+
+Frontend: Bootstrap for responsive design.
+
+Database: MySQL for storing student, room, and payment information.
 
 ## Output 
 - Home page of Hostel
-  ## LIGHT MODE 
-![image](https://github.com/user-attachments/assets/b4228d72-e06c-4cbb-9692-8738aa2f0ae4)
-  ## DARK MODE
-   ![image](https://github.com/user-attachments/assets/5a6f1807-3f7f-4bd6-a37f-6c2f91ad921d)
+![image](https://github.com/user-attachments/assets/4acb8d58-d9eb-47c3-9ab6-b970b161a970)
 
-- Login/ Register page of User
-- ![image](https://github.com/user-attachments/assets/e6cb7696-76df-49c1-8ef7-e2eec4fa2b60)
-- ![image](https://github.com/user-attachments/assets/611c97de-3996-4b39-ae86-009ad4f6e4ef)
-
-
-- Login/ Register page of Admin
-- ![image](https://github.com/user-attachments/assets/af40723a-3292-4a2c-b66e-9340b8577f4b)
-
+- Login page of Admin / User
+- ![image](https://github.com/user-attachments/assets/e1e7091c-0c1b-4b36-a85c-e0906c9769bb)
 
 - Admin panel 
-![image](https://github.com/user-attachments/assets/152b30dd-82f4-4412-aecb-6b9541d048ee)
-![image](https://github.com/user-attachments/assets/f02e9278-9c61-4a2f-ba3e-35cb82ec3c9a)
-
-
+![image](https://github.com/user-attachments/assets/9e678728-9227-4dc4-af98-3667a2d8f58b)
 
 - Room managment 
-![image](https://github.com/user-attachments/assets/aed2f0d7-0e50-4fd3-ac51-1160ee8d7470)
-
+![image](https://github.com/user-attachments/assets/39cfb7cc-7663-43e9-bc79-0576eb3008cf)
 
 - student Managment
-  - In Developement
-  - 
+![image](https://github.com/user-attachments/assets/047d8aab-352b-4420-97f6-2a3eba268974)
+
+- Student Adding by Admin  with Images
+![image](https://github.com/user-attachments/assets/b905c144-861e-4690-a014-33f9a4b0c9ac)
+
  ## and Etc check in github Link : https://github.com/s123dhara/Hostel-Management-System-Using-PHP-and-MySQL
 
 
+## User Panel 
+![image](https://github.com/user-attachments/assets/d09c6f55-98d7-442e-9f94-7e676f4db048)
+
+# Everything is Working in User Panel. For furthur checking check in Github.
 
 
 ## Installation
