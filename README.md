@@ -4,21 +4,43 @@ The Hostel Management System is a web-based application developed using PHP, MyS
 
 
 ## Key & Features
-Student Management: Register students and maintain detailed records.
+Room Allocation Management:
 
-Room Management: Allocate, manage, and track room availability and status.
+- Create, view, and assign rooms to residents:
+  - Room availability tracking and status updates
+  - Configurable room categories (e.g., single, double, deluxe)
+  - Resident Information Management:
 
-Payment Tracking: Handle and monitor payments with transaction history.
+ - Add and manage resident profiles with detailed information
+  - Track residency duration, room history, and associated payments
 
-Responsive Design: Fully responsive interface powered by Bootstrap for seamless use on any device.
+- Payment Tracking and Billing [## This is Under Development Section ]:
+  - Record payments and issue bills/invoices
+  - Real-time updates on payment statuses (paid/unpaid)
+  - Payment history for each resident
+
+- Announcements & Notices:
+  - Create and publish announcements or important notices
+  - Role-based access for hostel staff to manage announcements
+  - Maintenance Requests:
+
+- Residents can file maintenance requests via their dashboard
+   - Administrators can track and manage pending and resolved requests
+   - Authentication and Role-based Access Control (RBAC):
+
+- Secure login with user roles (admin, resident, staff)
+  - Access control for different functionalities based on roles
+  
+- Dashboard Analytics:
+ - Visual representation of room occupancy rates
+ - Payment summaries, pending requests, and other useful statistics
 
 
-## Technologies
-Backend: PHP with MySQL for database management.
-
-Frontend: Bootstrap for responsive design.
-
-Database: MySQL for storing student, room, and payment information.
+Tech Stack
+- Tailwind CSS: Responsive and utility-first CSS framework to ensure a modern, mobile-friendly user interface.
+- Alpine.js: Minimal JavaScript framework for handling frontend interactivity without the need for large libraries.
+- Laravel: Robust PHP framework for backend development, featuring Eloquent ORM, routing, and secure user authentication.
+- Livewire: Dynamic, real-time updates to the user interface without leaving the simplicity of Laravel’s backend.
 
 ## Output 
 - Home page of Hostel
