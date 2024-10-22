@@ -1,6 +1,8 @@
 
 # HOSTEL MANAGEMENT SYSTEM
-The Hostel Management System is a web-based application developed using PHP, MySQL, and Bootstrap. It aims to streamline the management of hostel operations by providing an easy-to-use interface for handling key tasks like student registration, room allocation, payments, and maintenance requests.
+This Hostel Management System is a full-featured web application built using the TALL Stack (Tailwind CSS, Alpine.js, Laravel, and Livewire). It is designed to simplify and streamline hostel management tasks, providing an intuitive interface for both hostel administrators and residents.
+
+The system allows for efficient management of hostel-related activities such as room allocation, resident records, payment tracking, and more. It leverages the modern web development capabilities of the TALL Stack to create a reactive, fast, and visually appealing user experience.
 
 
 ## Key & Features
