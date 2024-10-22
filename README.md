@@ -6,37 +6,37 @@ The Hostel Management System is a web-based application developed using PHP, MyS
 ## Key & Features
 Room Allocation Management:
 
-- Create, view, and assign rooms to residents:
+- ## Create, view, and assign rooms to residents:
   - Room availability tracking and status updates
   - Configurable room categories (e.g., single, double, deluxe)
   - Resident Information Management:
 
- - Add and manage resident profiles with detailed information
-  - Track residency duration, room history, and associated payments
+ - ## Add and manage resident profiles with detailed information
+    - Track residency duration, room history, and associated payments
 
-- Payment Tracking and Billing [## This is Under Development Section ]:
+- ## Payment Tracking and Billing [## This is Under Development Section ]:
   - Record payments and issue bills/invoices
   - Real-time updates on payment statuses (paid/unpaid)
   - Payment history for each resident
 
-- Announcements & Notices:
+- ## Announcements & Notices:
   - Create and publish announcements or important notices
   - Role-based access for hostel staff to manage announcements
   - Maintenance Requests:
 
-- Residents can file maintenance requests via their dashboard
+- ## Residents can file maintenance requests via their dashboard
    - Administrators can track and manage pending and resolved requests
    - Authentication and Role-based Access Control (RBAC):
 
-- Secure login with user roles (admin, resident, staff)
+- ## Secure login with user roles (admin, resident, staff)
   - Access control for different functionalities based on roles
   
-- Dashboard Analytics:
+- ## Dashboard Analytics:
  - Visual representation of room occupancy rates
  - Payment summaries, pending requests, and other useful statistics
 
 
-Tech Stack
+## Tech Stack
 - Tailwind CSS: Responsive and utility-first CSS framework to ensure a modern, mobile-friendly user interface.
 - Alpine.js: Minimal JavaScript framework for handling frontend interactivity without the need for large libraries.
 - Laravel: Robust PHP framework for backend development, featuring Eloquent ORM, routing, and secure user authentication.
