@@ -44,30 +44,36 @@ Room Allocation Management:
 
 ## Output 
 - Home page of Hostel
-![image](https://github.com/user-attachments/assets/4acb8d58-d9eb-47c3-9ab6-b970b161a970)
+  ## LIGHT MODE 
+![image](https://github.com/user-attachments/assets/b4228d72-e06c-4cbb-9692-8738aa2f0ae4)
+  ## DARK MODE
+   ![image](https://github.com/user-attachments/assets/5a6f1807-3f7f-4bd6-a37f-6c2f91ad921d)
 
-- Login page of Admin / User
-- ![image](https://github.com/user-attachments/assets/e1e7091c-0c1b-4b36-a85c-e0906c9769bb)
+- Login/ Register page of User
+- ![image](https://github.com/user-attachments/assets/e6cb7696-76df-49c1-8ef7-e2eec4fa2b60)
+- ![image](https://github.com/user-attachments/assets/611c97de-3996-4b39-ae86-009ad4f6e4ef)
+
+
+- Login/ Register page of Admin
+- ![image](https://github.com/user-attachments/assets/af40723a-3292-4a2c-b66e-9340b8577f4b)
+
 
 - Admin panel 
-![image](https://github.com/user-attachments/assets/9e678728-9227-4dc4-af98-3667a2d8f58b)
+![image](https://github.com/user-attachments/assets/152b30dd-82f4-4412-aecb-6b9541d048ee)
+![image](https://github.com/user-attachments/assets/f02e9278-9c61-4a2f-ba3e-35cb82ec3c9a)
+
+
 
 - Room managment 
-![image](https://github.com/user-attachments/assets/39cfb7cc-7663-43e9-bc79-0576eb3008cf)
+![image](https://github.com/user-attachments/assets/aed2f0d7-0e50-4fd3-ac51-1160ee8d7470)
+
 
 - student Managment
-![image](https://github.com/user-attachments/assets/047d8aab-352b-4420-97f6-2a3eba268974)
-
-- Student Adding by Admin  with Images
-![image](https://github.com/user-attachments/assets/b905c144-861e-4690-a014-33f9a4b0c9ac)
-
+  - In Developement
+  - 
  ## and Etc check in github Link : https://github.com/s123dhara/Hostel-Management-System-Using-PHP-and-MySQL
 
 
-## User Panel 
-![image](https://github.com/user-attachments/assets/d09c6f55-98d7-442e-9f94-7e676f4db048)
-
-# Everything is Working in User Panel. For furthur checking check in Github.
 
 
 ## Installation
